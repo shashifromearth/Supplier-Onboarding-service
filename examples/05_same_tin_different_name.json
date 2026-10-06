@@ -1,0 +1,188 @@
+{
+  "schema_version": "1.0",
+  "request_id": "a4f138340a7741fbbe34c8f41a8e7305",
+  "tenant_id": "tenant_acme_mfg",
+  "document_id": "doc_39a431c97135f1b5",
+  "decision": "HUMAN_REVIEW",
+  "confidence": 0.377,
+  "matched_supplier_id": null,
+  "suggested_action": {
+    "decision": "UPDATE_EXISTING_SUPPLIER",
+    "supplier_id": "SUP-1004",
+    "confidence": 0.377
+  },
+  "review_reasons": [
+    {
+      "code": "TIN_NAME_CONFLICT",
+      "message": "TIN is on file for 'Fabrikam Inc' but the form names 'Blue Yonder Freight Partners LP' (similarity 22 < 85). Legitimate restructure or payment-redirection attempt - verify with supplier."
+    }
+  ],
+  "document": {
+    "filename": "05_same_tin_different_name.pdf",
+    "sha256": "39a431c97135f1b549cb536af183d5f4273b539095e905383bdcbe731b7dd425",
+    "mime_type": "application/pdf",
+    "page_count": 1,
+    "form_type": "W-9",
+    "form_revision": "2024-mar"
+  },
+  "extracted_fields": {
+    "legal_name": {
+      "value": "Blue Yonder Freight Partners LP",
+      "confidence": 0.99,
+      "source": "layout:value-below-label",
+      "status": "OK"
+    },
+    "dba_name": {
+      "value": null,
+      "confidence": 0.9,
+      "source": "layout",
+      "status": "NOT_PROVIDED"
+    },
+    "tax_classification": {
+      "value": "PARTNERSHIP",
+      "confidence": 0.99,
+      "source": "layout:checkbox-ink",
+      "status": "OK"
+    },
+    "address": {
+      "value": "3100 Industrial Pkwy",
+      "confidence": 0.99,
+      "source": "layout:value-below-label",
+      "status": "OK"
+    },
+    "city": {
+      "value": "Dayton",
+      "confidence": 0.99,
+      "source": "layout:value-below-label",
+      "status": "OK"
+    },
+    "state": {
+      "value": "OH",
+      "confidence": 0.99,
+      "source": "layout:value-below-label",
+      "status": "OK"
+    },
+    "zip": {
+      "value": "45414",
+      "confidence": 0.99,
+      "source": "layout:value-below-label",
+      "status": "OK"
+    },
+    "tin": {
+      "masked": "**-***7390",
+      "last4": "7390",
+      "tin_type": "EIN",
+      "fingerprint": "hmac256:7d11afb9b3d45b909b83c370fb99dbd7",
+      "vault_ref": "vault://tenant_acme_mfg/tin/a44e1a5dc9104e35",
+      "confidence": 0.99,
+      "source": "layout:tin-box",
+      "status": "OK"
+    },
+    "signature_present": {
+      "value": true,
+      "confidence": 0.943,
+      "source": "layout:signature-ink",
+      "status": "OK"
+    },
+    "signature_date": {
+      "value": "2026-09-28",
+      "confidence": 0.99,
+      "source": "layout:date",
+      "status": "OK"
+    }
+  },
+  "validation_flags": [],
+  "match_result": {
+    "strategy": "TIN_EXACT",
+    "best_candidate": {
+      "supplier_id": "SUP-1004",
+      "legal_name": "Fabrikam Inc",
+      "tin_relation": "SAME",
+      "scores": {
+        "tin_exact": true,
+        "legal_name": 22.2,
+        "dba_name": 0.0,
+        "address": 100.0,
+        "composite": 45.5
+      },
+      "band": "NO_MATCH"
+    },
+    "candidates": [
+      {
+        "supplier_id": "SUP-1004",
+        "legal_name": "Fabrikam Inc",
+        "tin_relation": "SAME",
+        "scores": {
+          "tin_exact": true,
+          "legal_name": 22.2,
+          "dba_name": 0.0,
+          "address": 100.0,
+          "composite": 45.5
+        },
+        "band": "NO_MATCH"
+      },
+      {
+        "supplier_id": "SUP-1024",
+        "legal_name": "Blue Yonder Airlines",
+        "tin_relation": "DIFFERENT",
+        "scores": {
+          "tin_exact": false,
+          "legal_name": 63.9,
+          "dba_name": 0.0,
+          "address": 21.9,
+          "composite": 51.3
+        },
+        "band": "NO_MATCH"
+      },
+      {
+        "supplier_id": "SUP-1028",
+        "legal_name": "Woodgrove Supply Partners",
+        "tin_relation": "DIFFERENT",
+        "scores": {
+          "tin_exact": false,
+          "legal_name": 49.1,
+          "dba_name": 0.0,
+          "address": 21.9,
+          "composite": 40.9
+        },
+        "band": "NO_MATCH"
+      }
+    ],
+    "candidates_considered": 3,
+    "change_set": [
+      {
+        "field": "legal_name",
+        "current": "Fabrikam Inc",
+        "proposed": "Blue Yonder Freight Partners LP",
+        "material": true
+      },
+      {
+        "field": "tax_classification",
+        "current": "C_CORPORATION",
+        "proposed": "PARTNERSHIP",
+        "material": true
+      }
+    ]
+  },
+  "reasoning": [
+    "TIN matches existing supplier SUP-1004 (fingerprint equality); name similarity 22.",
+    "Critical-field extraction confidence 0.94; identity confidence 0.40.",
+    "Routed to human review; suggested action: UPDATE_EXISTING_SUPPLIER (SUP-1004)."
+  ],
+  "processing": {
+    "pipeline_version": "0.3.0",
+    "policy_version": "2026-10-06.1",
+    "ocr_provider": "pdf-text-layer",
+    "extractor": "layout-v1",
+    "latency_ms": {
+      "load": 41.9,
+      "ocr": 153.7,
+      "extract": 7.7,
+      "validate": 0.1,
+      "match": 0.3,
+      "decide": 0.0
+    },
+    "estimated_cost_usd": 0.0,
+    "processed_at": "2026-10-06T11:13:06.228444Z"
+  }
+}

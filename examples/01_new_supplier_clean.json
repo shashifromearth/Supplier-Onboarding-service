@@ -1,0 +1,153 @@
+{
+  "schema_version": "1.0",
+  "request_id": "e5d9fde8d2cc46c9a57f288104cce877",
+  "tenant_id": "tenant_acme_mfg",
+  "document_id": "doc_10dcdaf77d80eda6",
+  "decision": "CREATE_NEW_SUPPLIER",
+  "confidence": 0.771,
+  "matched_supplier_id": null,
+  "suggested_action": null,
+  "review_reasons": [],
+  "document": {
+    "filename": "01_new_supplier_clean.pdf",
+    "sha256": "10dcdaf77d80eda60b3466af7035da68d3bf3e537e8986e23e70c2753b7193f3",
+    "mime_type": "application/pdf",
+    "page_count": 1,
+    "form_type": "W-9",
+    "form_revision": "2024-mar"
+  },
+  "extracted_fields": {
+    "legal_name": {
+      "value": "Bluewater Analytics LLC",
+      "confidence": 0.99,
+      "source": "layout:value-below-label",
+      "status": "OK"
+    },
+    "dba_name": {
+      "value": null,
+      "confidence": 0.9,
+      "source": "layout",
+      "status": "NOT_PROVIDED"
+    },
+    "tax_classification": {
+      "value": "LLC_S",
+      "confidence": 0.99,
+      "source": "layout:checkbox-ink",
+      "status": "OK"
+    },
+    "address": {
+      "value": "2140 Riverside Dr Ste 210",
+      "confidence": 0.99,
+      "source": "layout:value-below-label",
+      "status": "OK"
+    },
+    "city": {
+      "value": "Austin",
+      "confidence": 0.99,
+      "source": "layout:value-below-label",
+      "status": "OK"
+    },
+    "state": {
+      "value": "TX",
+      "confidence": 0.99,
+      "source": "layout:value-below-label",
+      "status": "OK"
+    },
+    "zip": {
+      "value": "78741",
+      "confidence": 0.99,
+      "source": "layout:value-below-label",
+      "status": "OK"
+    },
+    "tin": {
+      "masked": "**-***1862",
+      "last4": "1862",
+      "tin_type": "EIN",
+      "fingerprint": "hmac256:604f3be93bf7ebf9492fb1af63003a78",
+      "vault_ref": "vault://tenant_acme_mfg/tin/e78b9897440d4d31",
+      "confidence": 0.99,
+      "source": "layout:tin-box",
+      "status": "OK"
+    },
+    "signature_present": {
+      "value": true,
+      "confidence": 0.97,
+      "source": "layout:signature-ink",
+      "status": "OK"
+    },
+    "signature_date": {
+      "value": "2026-09-14",
+      "confidence": 0.99,
+      "source": "layout:date",
+      "status": "OK"
+    }
+  },
+  "validation_flags": [],
+  "match_result": {
+    "strategy": "NONE",
+    "best_candidate": {
+      "supplier_id": "SUP-1030",
+      "legal_name": "Bluewater Marine Supply",
+      "tin_relation": "DIFFERENT",
+      "scores": {
+        "tin_exact": false,
+        "legal_name": 60.0,
+        "dba_name": 0.0,
+        "address": 20.6,
+        "composite": 48.2
+      },
+      "band": "NO_MATCH"
+    },
+    "candidates": [
+      {
+        "supplier_id": "SUP-1030",
+        "legal_name": "Bluewater Marine Supply",
+        "tin_relation": "DIFFERENT",
+        "scores": {
+          "tin_exact": false,
+          "legal_name": 60.0,
+          "dba_name": 0.0,
+          "address": 20.6,
+          "composite": 48.2
+        },
+        "band": "NO_MATCH"
+      },
+      {
+        "supplier_id": "SUP-1024",
+        "legal_name": "Blue Yonder Airlines",
+        "tin_relation": "DIFFERENT",
+        "scores": {
+          "tin_exact": false,
+          "legal_name": 56.4,
+          "dba_name": 0.0,
+          "address": 22.7,
+          "composite": 46.3
+        },
+        "band": "NO_MATCH"
+      }
+    ],
+    "candidates_considered": 2,
+    "change_set": []
+  },
+  "reasoning": [
+    "No TIN match and no candidate above the review threshold (best: SUP-1030 composite 48).",
+    "Critical-field extraction confidence 0.97; identity confidence 0.80.",
+    "Automated decision: CREATE_NEW_SUPPLIER."
+  ],
+  "processing": {
+    "pipeline_version": "0.3.0",
+    "policy_version": "2026-10-06.1",
+    "ocr_provider": "pdf-text-layer",
+    "extractor": "layout-v1",
+    "latency_ms": {
+      "load": 57.1,
+      "ocr": 233.9,
+      "extract": 9.6,
+      "validate": 0.4,
+      "match": 0.3,
+      "decide": 0.0
+    },
+    "estimated_cost_usd": 0.0,
+    "processed_at": "2026-10-06T11:13:05.362370Z"
+  }
+}

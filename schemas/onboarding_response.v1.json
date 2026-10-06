@@ -1,0 +1,637 @@
+{
+  "$defs": {
+    "Decision": {
+      "enum": [
+        "CREATE_NEW_SUPPLIER",
+        "UPDATE_EXISTING_SUPPLIER",
+        "HUMAN_REVIEW"
+      ],
+      "title": "Decision",
+      "type": "string"
+    },
+    "DocumentInfo": {
+      "properties": {
+        "filename": {
+          "title": "Filename",
+          "type": "string"
+        },
+        "sha256": {
+          "title": "Sha256",
+          "type": "string"
+        },
+        "mime_type": {
+          "title": "Mime Type",
+          "type": "string"
+        },
+        "page_count": {
+          "title": "Page Count",
+          "type": "integer"
+        },
+        "form_type": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Form Type"
+        },
+        "form_revision": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Form Revision"
+        }
+      },
+      "required": [
+        "filename",
+        "sha256",
+        "mime_type",
+        "page_count"
+      ],
+      "title": "DocumentInfo",
+      "type": "object"
+    },
+    "ExtractedField": {
+      "properties": {
+        "value": {
+          "default": null,
+          "description": "Normalised value, or null if not found / not readable.",
+          "title": "Value"
+        },
+        "confidence": {
+          "description": "Calibrated confidence the value is correct (0-1).",
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Confidence",
+          "type": "number"
+        },
+        "source": {
+          "default": "",
+          "description": "Which extractor/stage produced the value.",
+          "title": "Source",
+          "type": "string"
+        },
+        "status": {
+          "default": "OK",
+          "description": "OK | LOW_CONFIDENCE | MISSING | NOT_PROVIDED (optional field confidently blank)",
+          "title": "Status",
+          "type": "string"
+        }
+      },
+      "required": [
+        "confidence"
+      ],
+      "title": "ExtractedField",
+      "type": "object"
+    },
+    "ExtractedFields": {
+      "properties": {
+        "legal_name": {
+          "$ref": "#/$defs/ExtractedField"
+        },
+        "dba_name": {
+          "$ref": "#/$defs/ExtractedField"
+        },
+        "tax_classification": {
+          "$ref": "#/$defs/ExtractedField"
+        },
+        "address": {
+          "$ref": "#/$defs/ExtractedField"
+        },
+        "city": {
+          "$ref": "#/$defs/ExtractedField"
+        },
+        "state": {
+          "$ref": "#/$defs/ExtractedField"
+        },
+        "zip": {
+          "$ref": "#/$defs/ExtractedField"
+        },
+        "tin": {
+          "$ref": "#/$defs/TinField"
+        },
+        "signature_present": {
+          "$ref": "#/$defs/ExtractedField"
+        },
+        "signature_date": {
+          "$ref": "#/$defs/ExtractedField"
+        }
+      },
+      "required": [
+        "legal_name",
+        "dba_name",
+        "tax_classification",
+        "address",
+        "city",
+        "state",
+        "zip",
+        "tin",
+        "signature_present",
+        "signature_date"
+      ],
+      "title": "ExtractedFields",
+      "type": "object"
+    },
+    "FieldChange": {
+      "properties": {
+        "field": {
+          "title": "Field",
+          "type": "string"
+        },
+        "current": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Current"
+        },
+        "proposed": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Proposed"
+        },
+        "material": {
+          "title": "Material",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "field",
+        "current",
+        "proposed",
+        "material"
+      ],
+      "title": "FieldChange",
+      "type": "object"
+    },
+    "MatchBand": {
+      "enum": [
+        "AUTO_MATCH",
+        "REVIEW",
+        "NO_MATCH"
+      ],
+      "title": "MatchBand",
+      "type": "string"
+    },
+    "MatchCandidate": {
+      "properties": {
+        "supplier_id": {
+          "title": "Supplier Id",
+          "type": "string"
+        },
+        "legal_name": {
+          "title": "Legal Name",
+          "type": "string"
+        },
+        "tin_relation": {
+          "description": "SAME | DIFFERENT | MISSING_IN_MASTER | MISSING_ON_FORM",
+          "title": "Tin Relation",
+          "type": "string"
+        },
+        "scores": {
+          "$ref": "#/$defs/MatchScores"
+        },
+        "band": {
+          "$ref": "#/$defs/MatchBand",
+          "description": "Band of the name+address composite alone (ignores TIN). The decision combines this with tin_relation."
+        }
+      },
+      "required": [
+        "supplier_id",
+        "legal_name",
+        "tin_relation",
+        "scores",
+        "band"
+      ],
+      "title": "MatchCandidate",
+      "type": "object"
+    },
+    "MatchResult": {
+      "properties": {
+        "strategy": {
+          "description": "TIN_EXACT | FUZZY | NONE",
+          "title": "Strategy",
+          "type": "string"
+        },
+        "best_candidate": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MatchCandidate"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "candidates": {
+          "description": "Top-N, best first.",
+          "items": {
+            "$ref": "#/$defs/MatchCandidate"
+          },
+          "title": "Candidates",
+          "type": "array"
+        },
+        "candidates_considered": {
+          "default": 0,
+          "title": "Candidates Considered",
+          "type": "integer"
+        },
+        "change_set": {
+          "description": "Diff vs best candidate when a match is proposed.",
+          "items": {
+            "$ref": "#/$defs/FieldChange"
+          },
+          "title": "Change Set",
+          "type": "array"
+        }
+      },
+      "required": [
+        "strategy"
+      ],
+      "title": "MatchResult",
+      "type": "object"
+    },
+    "MatchScores": {
+      "properties": {
+        "tin_exact": {
+          "title": "Tin Exact",
+          "type": "boolean"
+        },
+        "legal_name": {
+          "title": "Legal Name",
+          "type": "number"
+        },
+        "dba_name": {
+          "title": "Dba Name",
+          "type": "number"
+        },
+        "address": {
+          "title": "Address",
+          "type": "number"
+        },
+        "composite": {
+          "title": "Composite",
+          "type": "number"
+        }
+      },
+      "required": [
+        "tin_exact",
+        "legal_name",
+        "dba_name",
+        "address",
+        "composite"
+      ],
+      "title": "MatchScores",
+      "type": "object"
+    },
+    "ProcessingInfo": {
+      "properties": {
+        "pipeline_version": {
+          "title": "Pipeline Version",
+          "type": "string"
+        },
+        "policy_version": {
+          "title": "Policy Version",
+          "type": "string"
+        },
+        "ocr_provider": {
+          "title": "Ocr Provider",
+          "type": "string"
+        },
+        "extractor": {
+          "title": "Extractor",
+          "type": "string"
+        },
+        "latency_ms": {
+          "additionalProperties": {
+            "type": "number"
+          },
+          "title": "Latency Ms",
+          "type": "object"
+        },
+        "estimated_cost_usd": {
+          "title": "Estimated Cost Usd",
+          "type": "number"
+        },
+        "processed_at": {
+          "format": "date-time",
+          "title": "Processed At",
+          "type": "string"
+        }
+      },
+      "required": [
+        "pipeline_version",
+        "policy_version",
+        "ocr_provider",
+        "extractor",
+        "latency_ms",
+        "estimated_cost_usd",
+        "processed_at"
+      ],
+      "title": "ProcessingInfo",
+      "type": "object"
+    },
+    "ReviewReason": {
+      "properties": {
+        "code": {
+          "title": "Code",
+          "type": "string"
+        },
+        "message": {
+          "title": "Message",
+          "type": "string"
+        }
+      },
+      "required": [
+        "code",
+        "message"
+      ],
+      "title": "ReviewReason",
+      "type": "object"
+    },
+    "Severity": {
+      "enum": [
+        "BLOCKING",
+        "WARNING",
+        "INFO"
+      ],
+      "title": "Severity",
+      "type": "string"
+    },
+    "SuggestedAction": {
+      "description": "For HUMAN_REVIEW: what the engine would have done, to pre-fill the reviewer's screen.",
+      "properties": {
+        "decision": {
+          "$ref": "#/$defs/Decision"
+        },
+        "supplier_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Supplier Id"
+        },
+        "confidence": {
+          "title": "Confidence",
+          "type": "number"
+        }
+      },
+      "required": [
+        "decision",
+        "confidence"
+      ],
+      "title": "SuggestedAction",
+      "type": "object"
+    },
+    "TinField": {
+      "description": "The TIN is never returned in clear. Consumers use vault_ref to retrieve it with their own entitlement.",
+      "properties": {
+        "masked": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "e.g. '**-***6789' or '***-**-6789'",
+          "title": "Masked"
+        },
+        "last4": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Last4"
+        },
+        "tin_type": {
+          "$ref": "#/$defs/TinType",
+          "default": "UNKNOWN"
+        },
+        "fingerprint": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Tenant-scoped HMAC-SHA256 blind index; stable for equality checks.",
+          "title": "Fingerprint"
+        },
+        "vault_ref": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Opaque reference to the encrypted TIN in the tenant vault.",
+          "title": "Vault Ref"
+        },
+        "confidence": {
+          "default": 0.0,
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Confidence",
+          "type": "number"
+        },
+        "source": {
+          "default": "",
+          "title": "Source",
+          "type": "string"
+        },
+        "status": {
+          "default": "OK",
+          "title": "Status",
+          "type": "string"
+        }
+      },
+      "title": "TinField",
+      "type": "object"
+    },
+    "TinType": {
+      "enum": [
+        "EIN",
+        "SSN",
+        "UNKNOWN"
+      ],
+      "title": "TinType",
+      "type": "string"
+    },
+    "ValidationFlag": {
+      "properties": {
+        "code": {
+          "title": "Code",
+          "type": "string"
+        },
+        "severity": {
+          "$ref": "#/$defs/Severity"
+        },
+        "field": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Field"
+        },
+        "message": {
+          "title": "Message",
+          "type": "string"
+        }
+      },
+      "required": [
+        "code",
+        "severity",
+        "message"
+      ],
+      "title": "ValidationFlag",
+      "type": "object"
+    }
+  },
+  "description": "v1 contract returned to downstream consumers (supplier-master service, review queue).",
+  "properties": {
+    "schema_version": {
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "request_id": {
+      "title": "Request Id",
+      "type": "string"
+    },
+    "tenant_id": {
+      "title": "Tenant Id",
+      "type": "string"
+    },
+    "document_id": {
+      "title": "Document Id",
+      "type": "string"
+    },
+    "decision": {
+      "$ref": "#/$defs/Decision"
+    },
+    "confidence": {
+      "description": "Confidence that `decision` is the correct action.",
+      "maximum": 1.0,
+      "minimum": 0.0,
+      "title": "Confidence",
+      "type": "number"
+    },
+    "matched_supplier_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "Set only for UPDATE_EXISTING_SUPPLIER.",
+      "title": "Matched Supplier Id"
+    },
+    "suggested_action": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/SuggestedAction"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "Set only for HUMAN_REVIEW."
+    },
+    "review_reasons": {
+      "items": {
+        "$ref": "#/$defs/ReviewReason"
+      },
+      "title": "Review Reasons",
+      "type": "array"
+    },
+    "document": {
+      "$ref": "#/$defs/DocumentInfo"
+    },
+    "extracted_fields": {
+      "$ref": "#/$defs/ExtractedFields"
+    },
+    "validation_flags": {
+      "items": {
+        "$ref": "#/$defs/ValidationFlag"
+      },
+      "title": "Validation Flags",
+      "type": "array"
+    },
+    "match_result": {
+      "$ref": "#/$defs/MatchResult"
+    },
+    "reasoning": {
+      "description": "Human-readable decision trace, in order.",
+      "items": {
+        "type": "string"
+      },
+      "title": "Reasoning",
+      "type": "array"
+    },
+    "processing": {
+      "$ref": "#/$defs/ProcessingInfo"
+    }
+  },
+  "required": [
+    "request_id",
+    "tenant_id",
+    "document_id",
+    "decision",
+    "confidence",
+    "document",
+    "extracted_fields",
+    "match_result",
+    "processing"
+  ],
+  "title": "OnboardingResponse",
+  "type": "object"
+}

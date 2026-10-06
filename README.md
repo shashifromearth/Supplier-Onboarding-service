@@ -1,4 +1,4 @@
-# W-9 Supplier Onboarding Service (prototype)
+# W-9 Supplier Onboarding Service 
 
 AI-assisted service that reads a W-9 (PDF/PNG/JPG), extracts supplier fields with **per-field confidence**, validates them, matches against the tenant's supplier master, and returns a structured decision: `CREATE_NEW_SUPPLIER`, `UPDATE_EXISTING_SUPPLIER` or `HUMAN_REVIEW`, with reasons.
 
@@ -6,7 +6,7 @@ AI-assisted service that reads a W-9 (PDF/PNG/JPG), extracts supplier fields wit
 - **Production readiness (millions of documents/day, real tools, steps):** [`docs/PRODUCTION_READINESS.md`](docs/PRODUCTION_READINESS.md)
 - **Output contract:** [`schemas/onboarding_response.v1.json`](schemas/onboarding_response.v1.json), with examples for every sample in [`examples/`](examples/)
 
-## Quick start (no API keys needed)
+## Quick start 
 
 **Requirements:** Python **3.10, 3.11 or 3.12** (3.13+ is not supported yet: the local OCR package `rapidocr_onnxruntime` has no wheel for it). Run everything from the repository root.
 

@@ -1,0 +1,31 @@
+supplier_id,legal_name,dba_name,tin_fingerprint,tin_last4,tax_classification,address,city,state,zip,bank_account_ref,status,last_updated
+SUP-1001,ACME INDUSTRIAL SUPPLY INC,Acme Supply,hmac256:1379f59271f6c070313e3c3b29f7bad4,7265,C_CORPORATION,1200 West Lake Street,Chicago,IL,60607,vault://tenant_acme_mfg/bank/sup-1001,ACTIVE,2024-02-11
+SUP-1002,Northwind Traders LLC,,hmac256:f19524aac70f831c989e686400bd332b,8476,LLC_C,455 Harbor Blvd,Tacoma,WA,98402,vault://tenant_acme_mfg/bank/sup-1002,ACTIVE,2023-07-30
+SUP-1003,Contoso Limited,,hmac256:09704090b92ff3142f99778f094a7069,2098,C_CORPORATION,77 Market Street,Boston,MA,02110,vault://tenant_acme_mfg/bank/sup-1003,ACTIVE,2025-01-05
+SUP-1004,Fabrikam Inc,,hmac256:7d11afb9b3d45b909b83c370fb99dbd7,7390,C_CORPORATION,3100 Industrial Pkwy,Dayton,OH,45414,vault://tenant_acme_mfg/bank/sup-1004,ACTIVE,2022-11-19
+SUP-1005,Tailspin Toy Company Inc,,,,C_CORPORATION,2207 Commerce Dr,Columbus,OH,43215,vault://tenant_acme_mfg/bank/sup-1005,ACTIVE,2019-05-02
+SUP-1006,"Litware, Inc.",,hmac256:2dafc900bdb215eab3aa0c3997de6e4d,8810,C_CORPORATION,2450 Bayshore Parkway,Mountain View,CA,94043,vault://tenant_acme_mfg/bank/sup-1006,ACTIVE,2024-08-14
+SUP-1007,Wide World Importers,,,,LLC_C,88 Dockside Avenue,Savannah,GA,31401,vault://tenant_acme_mfg/bank/sup-1007,ACTIVE,2018-09-09
+SUP-1008,Proseware Inc,,hmac256:49cd781d55144eb5c22782ec68fa5ffa,0234,C_CORPORATION,12 Harbor View Rd,Portland,ME,04101,vault://tenant_acme_mfg/bank/sup-1008,ACTIVE,2021-03-03
+SUP-1009,"PROSEWARE, INC.",,,,C_CORPORATION,12 Harbor View Road,Portland,ME,04101,vault://tenant_acme_mfg/bank/sup-1009,ACTIVE,2016-06-21
+SUP-1010,Adventure Works Cycles,,hmac256:c067c1b12ad2d70e110a228aa76a9fd7,9384,C_CORPORATION,4100 Trail Ridge Rd,Bend,OR,97701,vault://tenant_acme_mfg/bank/sup-1010,ACTIVE,2024-04-01
+SUP-1011,Alpine Ski House LLC,,hmac256:9b1083349abf2e5daea7427878f0054d,0293,LLC_S,9 Summit Rd,Park City,UT,84060,vault://tenant_acme_mfg/bank/sup-1011,ACTIVE,2023-12-12
+SUP-1012,Coho Winery,Coho Vineyards,hmac256:d08538b725dde90559384919f3aa929d,9283,S_CORPORATION,1500 Vine St,Napa,CA,94559,vault://tenant_acme_mfg/bank/sup-1012,ACTIVE,2024-10-10
+SUP-1013,Fourth Coffee Company,,hmac256:4edac33c9393f18d2f85748477b033a0,8374,C_CORPORATION,300 Pike St,Seattle,WA,98101,vault://tenant_acme_mfg/bank/sup-1013,ACTIVE,2025-03-14
+SUP-1014,Graphic Design Institute,,hmac256:467d9b1e6a2e499eaa3b5dc067e26a88,8475,OTHER,55 Canal St,New York,NY,10013,vault://tenant_acme_mfg/bank/sup-1014,ACTIVE,2022-06-30
+SUP-1015,Lucerne Publishing,,hmac256:3eeb86d2a39afb8d5008b3eef815d917,8374,C_CORPORATION,800 Lexington Ave,New York,NY,10065,vault://tenant_acme_mfg/bank/sup-1015,ACTIVE,2024-01-20
+SUP-1016,Margie's Travel,,hmac256:cd9baea76a51db9087659f06c92b89e7,2837,PARTNERSHIP,21 Ocean Dr,Miami Beach,FL,33139,vault://tenant_acme_mfg/bank/sup-1016,ACTIVE,2023-09-01
+SUP-1017,Southridge Video LLC,,hmac256:9ef1022840d0b8d2ad4f9792e83e90bc,3847,LLC_P,1777 Desert Sky Rd,Phoenix,AZ,85004,vault://tenant_acme_mfg/bank/sup-1017,ACTIVE,2024-05-05
+SUP-1018,Trey Research Inc,,hmac256:512aa4fa35b2b62de6d84e13e2c775a0,2836,C_CORPORATION,140 Research Blvd,Durham,NC,27703,vault://tenant_acme_mfg/bank/sup-1018,ACTIVE,2025-02-02
+SUP-1019,VanArsdel Ltd,,hmac256:e781703ccabc345134aba4140768731a,8375,C_CORPORATION,601 Lake Ave,Milwaukee,WI,53202,vault://tenant_acme_mfg/bank/sup-1019,ACTIVE,2021-08-18
+SUP-1020,Consolidated Messenger,,hmac256:ff17ad417801b2240084eb9bf5c5b501,2847,S_CORPORATION,4 Courier Ln,Nashville,TN,37203,vault://tenant_acme_mfg/bank/sup-1020,ACTIVE,2024-07-07
+SUP-1021,Relecloud Inc,,hmac256:8991a8829b8def21797344b7be246eaa,2873,C_CORPORATION,2600 Cloud Way,Fargo,ND,58102,vault://tenant_acme_mfg/bank/sup-1021,ACTIVE,2025-05-25
+SUP-1022,Lamna Healthcare Company,,hmac256:c19a74f3dbea36503814223e7806d973,2833,C_CORPORATION,77 Wellness Pkwy,Orlando,FL,32801,vault://tenant_acme_mfg/bank/sup-1022,ACTIVE,2023-03-30
+SUP-1023,A. Datum Corporation,,hmac256:b3b310d717ebd6561ac63359f887dcd1,9384,C_CORPORATION,15 Analytics Ct,Princeton,NJ,08540,vault://tenant_acme_mfg/bank/sup-1023,ACTIVE,2024-11-11
+SUP-1024,Blue Yonder Airlines,,hmac256:5bae0a3b65e0fbd9b40fcd5929d8de87,2845,C_CORPORATION,1 Airport Rd,Denver,CO,80249,vault://tenant_acme_mfg/bank/sup-1024,ACTIVE,2022-02-22
+SUP-1025,Bellows College,,hmac256:b6f5ca61c6d623901bb235a2f2904020,2834,OTHER,100 College Ave,Hartford,CT,06106,vault://tenant_acme_mfg/bank/sup-1025,ACTIVE,2020-09-15
+SUP-1026,Best For You Organics Company,,hmac256:daa0c57160fb6dd82ab1326881e7b27c,2844,LLC_S,88 Farm Rd,Eugene,OR,97401,vault://tenant_acme_mfg/bank/sup-1026,ACTIVE,2024-06-06
+SUP-1027,Humongous Insurance,,hmac256:d710fcb8ab40ab8813fb0055f8d9cf6d,2855,C_CORPORATION,500 Risk Plaza,Hartford,CT,06103,vault://tenant_acme_mfg/bank/sup-1027,ACTIVE,2023-10-10
+SUP-1028,Woodgrove Supply Partners,,hmac256:59bd501791079457fa504a18d0e02aad,2866,PARTNERSHIP,19 Timber Ln,Macon,GA,31201,vault://tenant_acme_mfg/bank/sup-1028,ACTIVE,2022-12-01
+SUP-1029,Northwind Electric Cars,,hmac256:ab9d4d3ff0654bcc3f100840eec5c244,2877,C_CORPORATION,700 Volt Ave,Spokane,WA,99201,vault://tenant_acme_mfg/bank/sup-1029,ACTIVE,2025-04-04
+SUP-1030,Bluewater Marine Supply,,hmac256:dad004a2366b2a6a603a2a6a1802ad3a,2888,C_CORPORATION,3 Pier Rd,Mobile,AL,36602,vault://tenant_acme_mfg/bank/sup-1030,ACTIVE,2024-03-03

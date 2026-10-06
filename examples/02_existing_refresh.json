@@ -1,0 +1,167 @@
+{
+  "schema_version": "1.0",
+  "request_id": "b6a93c27cf6b42f3a71c6ed349d247dd",
+  "tenant_id": "tenant_acme_mfg",
+  "document_id": "doc_c6635de5e62e3dd8",
+  "decision": "UPDATE_EXISTING_SUPPLIER",
+  "confidence": 0.96,
+  "matched_supplier_id": "SUP-1001",
+  "suggested_action": null,
+  "review_reasons": [],
+  "document": {
+    "filename": "02_existing_refresh.pdf",
+    "sha256": "c6635de5e62e3dd82a6edbb1a98d181a4ee4eee79912a4fda522f228f609a067",
+    "mime_type": "application/pdf",
+    "page_count": 1,
+    "form_type": "W-9",
+    "form_revision": "2024-mar"
+  },
+  "extracted_fields": {
+    "legal_name": {
+      "value": "Acme Industrial Supply, Inc.",
+      "confidence": 0.99,
+      "source": "layout:value-below-label",
+      "status": "OK"
+    },
+    "dba_name": {
+      "value": "Acme Supply",
+      "confidence": 0.99,
+      "source": "layout:value-below-label",
+      "status": "OK"
+    },
+    "tax_classification": {
+      "value": "C_CORPORATION",
+      "confidence": 0.99,
+      "source": "layout:checkbox-ink",
+      "status": "OK"
+    },
+    "address": {
+      "value": "1200 W Lake St",
+      "confidence": 0.99,
+      "source": "layout:value-below-label",
+      "status": "OK"
+    },
+    "city": {
+      "value": "Chicago",
+      "confidence": 0.99,
+      "source": "layout:value-below-label",
+      "status": "OK"
+    },
+    "state": {
+      "value": "IL",
+      "confidence": 0.99,
+      "source": "layout:value-below-label",
+      "status": "OK"
+    },
+    "zip": {
+      "value": "60607",
+      "confidence": 0.99,
+      "source": "layout:value-below-label",
+      "status": "OK"
+    },
+    "tin": {
+      "masked": "**-***7265",
+      "last4": "7265",
+      "tin_type": "EIN",
+      "fingerprint": "hmac256:1379f59271f6c070313e3c3b29f7bad4",
+      "vault_ref": "vault://tenant_acme_mfg/tin/27b744d01e33474d",
+      "confidence": 0.99,
+      "source": "layout:tin-box",
+      "status": "OK"
+    },
+    "signature_present": {
+      "value": true,
+      "confidence": 0.97,
+      "source": "layout:signature-ink",
+      "status": "OK"
+    },
+    "signature_date": {
+      "value": "2026-09-02",
+      "confidence": 0.99,
+      "source": "layout:date",
+      "status": "OK"
+    }
+  },
+  "validation_flags": [],
+  "match_result": {
+    "strategy": "TIN_EXACT",
+    "best_candidate": {
+      "supplier_id": "SUP-1001",
+      "legal_name": "ACME INDUSTRIAL SUPPLY INC",
+      "tin_relation": "SAME",
+      "scores": {
+        "tin_exact": true,
+        "legal_name": 100.0,
+        "dba_name": 100.0,
+        "address": 100.0,
+        "composite": 100.0
+      },
+      "band": "AUTO_MATCH"
+    },
+    "candidates": [
+      {
+        "supplier_id": "SUP-1001",
+        "legal_name": "ACME INDUSTRIAL SUPPLY INC",
+        "tin_relation": "SAME",
+        "scores": {
+          "tin_exact": true,
+          "legal_name": 100.0,
+          "dba_name": 100.0,
+          "address": 100.0,
+          "composite": 100.0
+        },
+        "band": "AUTO_MATCH"
+      },
+      {
+        "supplier_id": "SUP-1028",
+        "legal_name": "Woodgrove Supply Partners",
+        "tin_relation": "DIFFERENT",
+        "scores": {
+          "tin_exact": false,
+          "legal_name": 46.0,
+          "dba_name": 63.5,
+          "address": 26.9,
+          "composite": 52.5
+        },
+        "band": "NO_MATCH"
+      },
+      {
+        "supplier_id": "SUP-1030",
+        "legal_name": "Bluewater Marine Supply",
+        "tin_relation": "DIFFERENT",
+        "scores": {
+          "tin_exact": false,
+          "legal_name": 53.3,
+          "dba_name": 63.5,
+          "address": 18.3,
+          "composite": 49.9
+        },
+        "band": "NO_MATCH"
+      }
+    ],
+    "candidates_considered": 3,
+    "change_set": []
+  },
+  "reasoning": [
+    "TIN matches existing supplier SUP-1001 (fingerprint equality); name similarity 100.",
+    "No field changes vs master: W-9 refresh (new certification date on file).",
+    "Critical-field extraction confidence 0.97; identity confidence 0.99.",
+    "Automated decision: UPDATE_EXISTING_SUPPLIER -> SUP-1001."
+  ],
+  "processing": {
+    "pipeline_version": "0.3.0",
+    "policy_version": "2026-10-06.1",
+    "ocr_provider": "pdf-text-layer",
+    "extractor": "layout-v1",
+    "latency_ms": {
+      "load": 36.8,
+      "ocr": 155.9,
+      "extract": 8.5,
+      "validate": 0.2,
+      "match": 0.4,
+      "decide": 0.0
+    },
+    "estimated_cost_usd": 0.0,
+    "processed_at": "2026-10-06T11:13:05.571388Z"
+  }
+}

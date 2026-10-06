@@ -1,0 +1,162 @@
+{
+  "schema_version": "1.0",
+  "request_id": "4397be8af98443cea3bb0ae593dc702c",
+  "tenant_id": "tenant_acme_mfg",
+  "document_id": "doc_b33345efb9a061b7",
+  "decision": "HUMAN_REVIEW",
+  "confidence": 0.491,
+  "matched_supplier_id": null,
+  "suggested_action": {
+    "decision": "UPDATE_EXISTING_SUPPLIER",
+    "supplier_id": "SUP-1005",
+    "confidence": 0.491
+  },
+  "review_reasons": [
+    {
+      "code": "FUZZY_MATCH_REVIEW_BAND",
+      "message": "Possible match SUP-1005 'Tailspin Toy Company Inc' (name 96, address 22) with no TIN to confirm or rule it out."
+    }
+  ],
+  "document": {
+    "filename": "08_fuzzy_ambiguous.pdf",
+    "sha256": "b33345efb9a061b7d70f9228485d44685285b0da6b3921d5b30114c18edd9455",
+    "mime_type": "application/pdf",
+    "page_count": 1,
+    "form_type": "W-9",
+    "form_revision": "2024-mar"
+  },
+  "extracted_fields": {
+    "legal_name": {
+      "value": "Tailspin Toys Co",
+      "confidence": 0.99,
+      "source": "layout:value-below-label",
+      "status": "OK"
+    },
+    "dba_name": {
+      "value": null,
+      "confidence": 0.9,
+      "source": "layout",
+      "status": "NOT_PROVIDED"
+    },
+    "tax_classification": {
+      "value": "C_CORPORATION",
+      "confidence": 0.99,
+      "source": "layout:checkbox-ink",
+      "status": "OK"
+    },
+    "address": {
+      "value": "18 Elm Rd",
+      "confidence": 0.99,
+      "source": "layout:value-below-label",
+      "status": "OK"
+    },
+    "city": {
+      "value": "Akron",
+      "confidence": 0.99,
+      "source": "layout:value-below-label",
+      "status": "OK"
+    },
+    "state": {
+      "value": "OH",
+      "confidence": 0.99,
+      "source": "layout:value-below-label",
+      "status": "OK"
+    },
+    "zip": {
+      "value": "44308",
+      "confidence": 0.99,
+      "source": "layout:value-below-label",
+      "status": "OK"
+    },
+    "tin": {
+      "masked": "**-***1299",
+      "last4": "1299",
+      "tin_type": "EIN",
+      "fingerprint": "hmac256:c46abaf4855e616f53a4786bcfae6594",
+      "vault_ref": "vault://tenant_acme_mfg/tin/baf1ef14aaf449ad",
+      "confidence": 0.99,
+      "source": "layout:tin-box",
+      "status": "OK"
+    },
+    "signature_present": {
+      "value": true,
+      "confidence": 0.95,
+      "source": "layout:signature-ink",
+      "status": "OK"
+    },
+    "signature_date": {
+      "value": "2026-10-01",
+      "confidence": 0.99,
+      "source": "layout:date",
+      "status": "OK"
+    }
+  },
+  "validation_flags": [],
+  "match_result": {
+    "strategy": "NONE",
+    "best_candidate": {
+      "supplier_id": "SUP-1005",
+      "legal_name": "Tailspin Toy Company Inc",
+      "tin_relation": "MISSING_IN_MASTER",
+      "scores": {
+        "tin_exact": false,
+        "legal_name": 96.0,
+        "dba_name": 0.0,
+        "address": 22.4,
+        "composite": 73.9
+      },
+      "band": "NO_MATCH"
+    },
+    "candidates": [
+      {
+        "supplier_id": "SUP-1005",
+        "legal_name": "Tailspin Toy Company Inc",
+        "tin_relation": "MISSING_IN_MASTER",
+        "scores": {
+          "tin_exact": false,
+          "legal_name": 96.0,
+          "dba_name": 0.0,
+          "address": 22.4,
+          "composite": 73.9
+        },
+        "band": "NO_MATCH"
+      },
+      {
+        "supplier_id": "SUP-1011",
+        "legal_name": "Alpine Ski House LLC",
+        "tin_relation": "DIFFERENT",
+        "scores": {
+          "tin_exact": false,
+          "legal_name": 55.2,
+          "dba_name": 0.0,
+          "address": 21.0,
+          "composite": 44.9
+        },
+        "band": "NO_MATCH"
+      }
+    ],
+    "candidates_considered": 2,
+    "change_set": []
+  },
+  "reasoning": [
+    "No TIN match. Best fuzzy candidate SUP-1005 'Tailspin Toy Company Inc': name 96, address 22, composite 74, TIN MISSING_IN_MASTER.",
+    "Critical-field extraction confidence 0.95; identity confidence 0.52.",
+    "Routed to human review; suggested action: UPDATE_EXISTING_SUPPLIER (SUP-1005)."
+  ],
+  "processing": {
+    "pipeline_version": "0.3.0",
+    "policy_version": "2026-10-06.1",
+    "ocr_provider": "pdf-text-layer",
+    "extractor": "layout-v1",
+    "latency_ms": {
+      "load": 33.2,
+      "ocr": 138.1,
+      "extract": 8.2,
+      "validate": 0.1,
+      "match": 0.3,
+      "decide": 0.0
+    },
+    "estimated_cost_usd": 0.0,
+    "processed_at": "2026-10-06T11:13:06.835988Z"
+  }
+}

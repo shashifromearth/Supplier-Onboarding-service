@@ -1,0 +1,161 @@
+{
+  "schema_version": "1.0",
+  "request_id": "ed47f58fd2d548fdbcdbe3c1f6bfcb8b",
+  "tenant_id": "tenant_acme_mfg",
+  "document_id": "doc_c57a41ada8800e71",
+  "decision": "UPDATE_EXISTING_SUPPLIER",
+  "confidence": 0.96,
+  "matched_supplier_id": "SUP-1002",
+  "suggested_action": null,
+  "review_reasons": [],
+  "document": {
+    "filename": "03_existing_address_change.pdf",
+    "sha256": "c57a41ada8800e71110e2f671285ca89aad6ad872c2df71417b6cb78e35a4e8e",
+    "mime_type": "application/pdf",
+    "page_count": 1,
+    "form_type": "W-9",
+    "form_revision": "2024-mar"
+  },
+  "extracted_fields": {
+    "legal_name": {
+      "value": "Northwind Traders LLC",
+      "confidence": 0.99,
+      "source": "layout:value-below-label",
+      "status": "OK"
+    },
+    "dba_name": {
+      "value": null,
+      "confidence": 0.9,
+      "source": "layout",
+      "status": "NOT_PROVIDED"
+    },
+    "tax_classification": {
+      "value": "LLC_C",
+      "confidence": 0.99,
+      "source": "layout:checkbox-ink",
+      "status": "OK"
+    },
+    "address": {
+      "value": "900 Pacific Ave Suite 300",
+      "confidence": 0.99,
+      "source": "layout:value-below-label",
+      "status": "OK"
+    },
+    "city": {
+      "value": "Tacoma",
+      "confidence": 0.99,
+      "source": "layout:value-below-label",
+      "status": "OK"
+    },
+    "state": {
+      "value": "WA",
+      "confidence": 0.99,
+      "source": "layout:value-below-label",
+      "status": "OK"
+    },
+    "zip": {
+      "value": "98402",
+      "confidence": 0.99,
+      "source": "layout:value-below-label",
+      "status": "OK"
+    },
+    "tin": {
+      "masked": "**-***8476",
+      "last4": "8476",
+      "tin_type": "EIN",
+      "fingerprint": "hmac256:f19524aac70f831c989e686400bd332b",
+      "vault_ref": "vault://tenant_acme_mfg/tin/443d3a0da65f46df",
+      "confidence": 0.99,
+      "source": "layout:tin-box",
+      "status": "OK"
+    },
+    "signature_present": {
+      "value": true,
+      "confidence": 0.97,
+      "source": "layout:signature-ink",
+      "status": "OK"
+    },
+    "signature_date": {
+      "value": "2026-09-21",
+      "confidence": 0.99,
+      "source": "layout:date",
+      "status": "OK"
+    }
+  },
+  "validation_flags": [],
+  "match_result": {
+    "strategy": "TIN_EXACT",
+    "best_candidate": {
+      "supplier_id": "SUP-1002",
+      "legal_name": "Northwind Traders LLC",
+      "tin_relation": "SAME",
+      "scores": {
+        "tin_exact": true,
+        "legal_name": 100.0,
+        "dba_name": 0.0,
+        "address": 44.7,
+        "composite": 83.4
+      },
+      "band": "REVIEW"
+    },
+    "candidates": [
+      {
+        "supplier_id": "SUP-1002",
+        "legal_name": "Northwind Traders LLC",
+        "tin_relation": "SAME",
+        "scores": {
+          "tin_exact": true,
+          "legal_name": 100.0,
+          "dba_name": 0.0,
+          "address": 44.7,
+          "composite": 83.4
+        },
+        "band": "REVIEW"
+      },
+      {
+        "supplier_id": "SUP-1029",
+        "legal_name": "Northwind Electric Cars",
+        "tin_relation": "DIFFERENT",
+        "scores": {
+          "tin_exact": false,
+          "legal_name": 62.3,
+          "dba_name": 0.0,
+          "address": 32.0,
+          "composite": 53.2
+        },
+        "band": "NO_MATCH"
+      }
+    ],
+    "candidates_considered": 2,
+    "change_set": [
+      {
+        "field": "address",
+        "current": "455 Harbor Blvd",
+        "proposed": "900 Pacific Ave Suite 300",
+        "material": false
+      }
+    ]
+  },
+  "reasoning": [
+    "TIN matches existing supplier SUP-1002 (fingerprint equality); name similarity 100.",
+    "Non-material changes vs master: address.",
+    "Critical-field extraction confidence 0.97; identity confidence 0.99.",
+    "Automated decision: UPDATE_EXISTING_SUPPLIER -> SUP-1002."
+  ],
+  "processing": {
+    "pipeline_version": "0.3.0",
+    "policy_version": "2026-10-06.1",
+    "ocr_provider": "pdf-text-layer",
+    "extractor": "layout-v1",
+    "latency_ms": {
+      "load": 32.9,
+      "ocr": 166.6,
+      "extract": 10.8,
+      "validate": 0.2,
+      "match": 0.3,
+      "decide": 0.0
+    },
+    "estimated_cost_usd": 0.0,
+    "processed_at": "2026-10-06T11:13:05.788212Z"
+  }
+}

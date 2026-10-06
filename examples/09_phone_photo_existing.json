@@ -1,0 +1,167 @@
+{
+  "schema_version": "1.0",
+  "request_id": "0d942105cc4b4c7497bec030cfc694ae",
+  "tenant_id": "tenant_acme_mfg",
+  "document_id": "doc_b475b76520cc85b8",
+  "decision": "UPDATE_EXISTING_SUPPLIER",
+  "confidence": 0.862,
+  "matched_supplier_id": "SUP-1006",
+  "suggested_action": null,
+  "review_reasons": [],
+  "document": {
+    "filename": "09_phone_photo_existing.jpg",
+    "sha256": "b475b76520cc85b8bf1117c20d43871dc5853e6672ec99dcbbf7f45b0dd056db",
+    "mime_type": "image/jpeg",
+    "page_count": 1,
+    "form_type": "W-9",
+    "form_revision": "2024-mar"
+  },
+  "extracted_fields": {
+    "legal_name": {
+      "value": "Litware Inc",
+      "confidence": 0.97,
+      "source": "layout:value-below-label",
+      "status": "OK"
+    },
+    "dba_name": {
+      "value": null,
+      "confidence": 0.9,
+      "source": "layout",
+      "status": "NOT_PROVIDED"
+    },
+    "tax_classification": {
+      "value": "C_CORPORATION",
+      "confidence": 0.871,
+      "source": "layout:checkbox-ink",
+      "status": "OK"
+    },
+    "address": {
+      "value": "2450 Bayshore Pkwy",
+      "confidence": 0.97,
+      "source": "layout:value-below-label",
+      "status": "OK"
+    },
+    "city": {
+      "value": "Mountain View",
+      "confidence": 0.97,
+      "source": "layout:value-below-label",
+      "status": "OK"
+    },
+    "state": {
+      "value": "CA",
+      "confidence": 0.97,
+      "source": "layout:value-below-label",
+      "status": "OK"
+    },
+    "zip": {
+      "value": "94043",
+      "confidence": 0.97,
+      "source": "layout:value-below-label",
+      "status": "OK"
+    },
+    "tin": {
+      "masked": "**-***8810",
+      "last4": "8810",
+      "tin_type": "EIN",
+      "fingerprint": "hmac256:2dafc900bdb215eab3aa0c3997de6e4d",
+      "vault_ref": "vault://tenant_acme_mfg/tin/1b5a6af357f843f9",
+      "confidence": 0.97,
+      "source": "layout:tin-box",
+      "status": "OK"
+    },
+    "signature_present": {
+      "value": true,
+      "confidence": 0.947,
+      "source": "layout:signature-ink",
+      "status": "OK"
+    },
+    "signature_date": {
+      "value": "2026-09-17",
+      "confidence": 0.97,
+      "source": "layout:date",
+      "status": "OK"
+    }
+  },
+  "validation_flags": [],
+  "match_result": {
+    "strategy": "TIN_EXACT",
+    "best_candidate": {
+      "supplier_id": "SUP-1006",
+      "legal_name": "Litware, Inc.",
+      "tin_relation": "SAME",
+      "scores": {
+        "tin_exact": true,
+        "legal_name": 100.0,
+        "dba_name": 0.0,
+        "address": 100.0,
+        "composite": 100.0
+      },
+      "band": "AUTO_MATCH"
+    },
+    "candidates": [
+      {
+        "supplier_id": "SUP-1006",
+        "legal_name": "Litware, Inc.",
+        "tin_relation": "SAME",
+        "scores": {
+          "tin_exact": true,
+          "legal_name": 100.0,
+          "dba_name": 0.0,
+          "address": 100.0,
+          "composite": 100.0
+        },
+        "band": "AUTO_MATCH"
+      },
+      {
+        "supplier_id": "SUP-1008",
+        "legal_name": "Proseware Inc",
+        "tin_relation": "DIFFERENT",
+        "scores": {
+          "tin_exact": false,
+          "legal_name": 50.0,
+          "dba_name": 0.0,
+          "address": 28.0,
+          "composite": 43.4
+        },
+        "band": "NO_MATCH"
+      },
+      {
+        "supplier_id": "SUP-1009",
+        "legal_name": "PROSEWARE, INC.",
+        "tin_relation": "MISSING_IN_MASTER",
+        "scores": {
+          "tin_exact": false,
+          "legal_name": 50.0,
+          "dba_name": 0.0,
+          "address": 28.0,
+          "composite": 43.4
+        },
+        "band": "NO_MATCH"
+      }
+    ],
+    "candidates_considered": 3,
+    "change_set": []
+  },
+  "reasoning": [
+    "TIN matches existing supplier SUP-1006 (fingerprint equality); name similarity 100.",
+    "No field changes vs master: W-9 refresh (new certification date on file).",
+    "Critical-field extraction confidence 0.87; identity confidence 0.99.",
+    "Automated decision: UPDATE_EXISTING_SUPPLIER -> SUP-1006."
+  ],
+  "processing": {
+    "pipeline_version": "0.3.0",
+    "policy_version": "2026-10-06.1",
+    "ocr_provider": "rapidocr-onnx",
+    "extractor": "layout-v1",
+    "latency_ms": {
+      "load": 20.7,
+      "ocr": 5051.6,
+      "extract": 6.8,
+      "validate": 0.2,
+      "match": 0.6,
+      "decide": 0.0
+    },
+    "estimated_cost_usd": 0.0,
+    "processed_at": "2026-10-06T11:13:11.923177Z"
+  }
+}

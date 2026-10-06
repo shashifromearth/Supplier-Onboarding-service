@@ -1,0 +1,131 @@
+{
+  "schema_version": "1.0",
+  "request_id": "be9af2079acc49f88f2e2ee095d1e8ce",
+  "tenant_id": "tenant_acme_mfg",
+  "document_id": "doc_369f0c5efda0b72e",
+  "decision": "HUMAN_REVIEW",
+  "confidence": 0.921,
+  "matched_supplier_id": null,
+  "suggested_action": {
+    "decision": "CREATE_NEW_SUPPLIER",
+    "supplier_id": null,
+    "confidence": 0.921
+  },
+  "review_reasons": [
+    {
+      "code": "MISSING_SIGNATURE",
+      "message": "Part II not signed - form is invalid for tax reporting."
+    }
+  ],
+  "document": {
+    "filename": "06_missing_signature.pdf",
+    "sha256": "369f0c5efda0b72e8bf77169e75b7efd71ef46decbc2556fd92c5e78d7938f89",
+    "mime_type": "application/pdf",
+    "page_count": 1,
+    "form_type": "W-9",
+    "form_revision": "2024-mar"
+  },
+  "extracted_fields": {
+    "legal_name": {
+      "value": "Riverbend Catering Co",
+      "confidence": 0.99,
+      "source": "layout:value-below-label",
+      "status": "OK"
+    },
+    "dba_name": {
+      "value": null,
+      "confidence": 0.9,
+      "source": "layout",
+      "status": "NOT_PROVIDED"
+    },
+    "tax_classification": {
+      "value": "S_CORPORATION",
+      "confidence": 0.99,
+      "source": "layout:checkbox-ink",
+      "status": "OK"
+    },
+    "address": {
+      "value": "45 Mill St",
+      "confidence": 0.99,
+      "source": "layout:value-below-label",
+      "status": "OK"
+    },
+    "city": {
+      "value": "Burlington",
+      "confidence": 0.99,
+      "source": "layout:value-below-label",
+      "status": "OK"
+    },
+    "state": {
+      "value": "VT",
+      "confidence": 0.99,
+      "source": "layout:value-below-label",
+      "status": "OK"
+    },
+    "zip": {
+      "value": "05401",
+      "confidence": 0.99,
+      "source": "layout:value-below-label",
+      "status": "OK"
+    },
+    "tin": {
+      "masked": "**-***7714",
+      "last4": "7714",
+      "tin_type": "EIN",
+      "fingerprint": "hmac256:65fe6eee1c0dfbf40f9f4e8fdca58f52",
+      "vault_ref": "vault://tenant_acme_mfg/tin/05b88bfed12b43ea",
+      "confidence": 0.99,
+      "source": "layout:tin-box",
+      "status": "OK"
+    },
+    "signature_present": {
+      "value": false,
+      "confidence": 0.93,
+      "source": "layout:signature-ink",
+      "status": "OK"
+    },
+    "signature_date": {
+      "value": null,
+      "confidence": 0.85,
+      "source": "layout:date",
+      "status": "MISSING"
+    }
+  },
+  "validation_flags": [
+    {
+      "code": "MISSING_SIGNATURE",
+      "severity": "BLOCKING",
+      "field": "signature_present",
+      "message": "Part II not signed - form is invalid for tax reporting."
+    }
+  ],
+  "match_result": {
+    "strategy": "NONE",
+    "best_candidate": null,
+    "candidates": [],
+    "candidates_considered": 0,
+    "change_set": []
+  },
+  "reasoning": [
+    "No TIN match and no candidate above the review threshold (no candidates).",
+    "1 blocking validation issue(s): MISSING_SIGNATURE.",
+    "Critical-field extraction confidence 0.93; identity confidence 0.99.",
+    "Routed to human review; suggested action: CREATE_NEW_SUPPLIER."
+  ],
+  "processing": {
+    "pipeline_version": "0.3.0",
+    "policy_version": "2026-10-06.1",
+    "ocr_provider": "pdf-text-layer",
+    "extractor": "layout-v1",
+    "latency_ms": {
+      "load": 30.6,
+      "ocr": 144.7,
+      "extract": 7.2,
+      "validate": 0.2,
+      "match": 0.1,
+      "decide": 0.0
+    },
+    "estimated_cost_usd": 0.0,
+    "processed_at": "2026-10-06T11:13:06.417342Z"
+  }
+}

@@ -1,0 +1,6 @@
+supplier_id,legal_name,dba_name,tin_fingerprint,tin_last4,tax_classification,address,city,state,zip,bank_account_ref,status,last_updated
+GBX-2001,Initech Software LLC,,hmac256:d43ae968d084315b6290ea2c22410f6a,9384,LLC_C,4120 Freidrich Ln,Austin,TX,78744,vault://tenant_globex/bank/gbx-2001,ACTIVE,2025-01-01
+GBX-2002,Umbrella Logistics Inc,,hmac256:969da125dc18990266fa215090f30dc0,0394,C_CORPORATION,1 Raccoon Way,Lansing,MI,48933,vault://tenant_globex/bank/gbx-2002,ACTIVE,2024-04-04
+GBX-2003,Hooli Office Products,,hmac256:3297d3dcb7aaa1cdc67b83822711fbbe,2800,S_CORPORATION,123 Main St,Fresno,CA,93721,vault://tenant_globex/bank/gbx-2003,ACTIVE,2023-03-03
+GBX-2004,Vandelay Industries,Vandelay Imports,hmac256:5634c7a93132aaf6d9257467ef31d95b,1222,C_CORPORATION,200 Park Ave,New York,NY,10166,vault://tenant_globex/bank/gbx-2004,ACTIVE,2024-09-09
+GBX-2005,Acme Packaging Co,,hmac256:a1c5290a8e924c47e3559fdb95d44632,4567,C_CORPORATION,50 Box Rd,Racine,WI,53403,vault://tenant_globex/bank/gbx-2005,ACTIVE,2022-02-02

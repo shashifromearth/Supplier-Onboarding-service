@@ -1,0 +1,114 @@
+{
+  "schema_version": "1.0",
+  "request_id": "a6928cf9658b4651bf28686e1a9af0da",
+  "tenant_id": "tenant_acme_mfg",
+  "document_id": "doc_accf6f8b811154df",
+  "decision": "CREATE_NEW_SUPPLIER",
+  "confidence": 0.918,
+  "matched_supplier_id": null,
+  "suggested_action": null,
+  "review_reasons": [],
+  "document": {
+    "filename": "11_sole_prop_ssn.png",
+    "sha256": "accf6f8b811154df59ffa255f1d7164ac6019f1aff342b6f08f67de75d4065a2",
+    "mime_type": "image/png",
+    "page_count": 1,
+    "form_type": "W-9",
+    "form_revision": "2024-mar"
+  },
+  "extracted_fields": {
+    "legal_name": {
+      "value": "Maria L Gonzalez",
+      "confidence": 0.97,
+      "source": "layout:value-below-label",
+      "status": "OK"
+    },
+    "dba_name": {
+      "value": "Gonzalez Landscaping",
+      "confidence": 0.97,
+      "source": "layout:value-below-label",
+      "status": "OK"
+    },
+    "tax_classification": {
+      "value": "INDIVIDUAL_SOLE_PROPRIETOR",
+      "confidence": 0.927,
+      "source": "layout:checkbox-ink",
+      "status": "OK"
+    },
+    "address": {
+      "value": "1934 Cactus Wren Ln",
+      "confidence": 0.97,
+      "source": "layout:value-below-label",
+      "status": "OK"
+    },
+    "city": {
+      "value": "Mesa",
+      "confidence": 0.97,
+      "source": "layout:value-below-label",
+      "status": "OK"
+    },
+    "state": {
+      "value": "AZ",
+      "confidence": 0.97,
+      "source": "layout:value-below-label",
+      "status": "OK"
+    },
+    "zip": {
+      "value": "85203",
+      "confidence": 0.97,
+      "source": "layout:value-below-label",
+      "status": "OK"
+    },
+    "tin": {
+      "masked": "***-**-4470",
+      "last4": "4470",
+      "tin_type": "SSN",
+      "fingerprint": "hmac256:0c9e3a70b34d9e6d4935373ca4a4aea1",
+      "vault_ref": "vault://tenant_acme_mfg/tin/76891731533d4942",
+      "confidence": 0.97,
+      "source": "layout:tin-box",
+      "status": "OK"
+    },
+    "signature_present": {
+      "value": true,
+      "confidence": 0.97,
+      "source": "layout:signature-ink",
+      "status": "OK"
+    },
+    "signature_date": {
+      "value": "2026-09-08",
+      "confidence": 0.97,
+      "source": "layout:date",
+      "status": "OK"
+    }
+  },
+  "validation_flags": [],
+  "match_result": {
+    "strategy": "NONE",
+    "best_candidate": null,
+    "candidates": [],
+    "candidates_considered": 0,
+    "change_set": []
+  },
+  "reasoning": [
+    "No TIN match and no candidate above the review threshold (no candidates).",
+    "Critical-field extraction confidence 0.93; identity confidence 0.99.",
+    "Automated decision: CREATE_NEW_SUPPLIER."
+  ],
+  "processing": {
+    "pipeline_version": "0.3.0",
+    "policy_version": "2026-10-06.1",
+    "ocr_provider": "rapidocr-onnx",
+    "extractor": "layout-v1",
+    "latency_ms": {
+      "load": 24.2,
+      "ocr": 5602.5,
+      "extract": 7.4,
+      "validate": 0.2,
+      "match": 0.5,
+      "decide": 0.1
+    },
+    "estimated_cost_usd": 0.0,
+    "processed_at": "2026-10-06T11:13:17.686245Z"
+  }
+}

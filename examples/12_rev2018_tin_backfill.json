@@ -1,0 +1,162 @@
+{
+  "schema_version": "1.0",
+  "request_id": "36fb1288cd57430f969da74fe02ca38b",
+  "tenant_id": "tenant_acme_mfg",
+  "document_id": "doc_8c3afdde9ecb21a2",
+  "decision": "UPDATE_EXISTING_SUPPLIER",
+  "confidence": 0.795,
+  "matched_supplier_id": "SUP-1007",
+  "suggested_action": null,
+  "review_reasons": [],
+  "document": {
+    "filename": "12_rev2018_tin_backfill.pdf",
+    "sha256": "8c3afdde9ecb21a260bafd7821a090c752cd27f96842fe8071579348d7794b2b",
+    "mime_type": "application/pdf",
+    "page_count": 1,
+    "form_type": "W-9",
+    "form_revision": "2018-oct"
+  },
+  "extracted_fields": {
+    "legal_name": {
+      "value": "Wide World Importers LLC",
+      "confidence": 0.99,
+      "source": "layout:value-below-label",
+      "status": "OK"
+    },
+    "dba_name": {
+      "value": null,
+      "confidence": 0.9,
+      "source": "layout",
+      "status": "NOT_PROVIDED"
+    },
+    "tax_classification": {
+      "value": "LLC_C",
+      "confidence": 0.99,
+      "source": "layout:checkbox-ink",
+      "status": "OK"
+    },
+    "address": {
+      "value": "88 Dockside Ave",
+      "confidence": 0.99,
+      "source": "layout:value-below-label",
+      "status": "OK"
+    },
+    "city": {
+      "value": "Savannah",
+      "confidence": 0.99,
+      "source": "layout:value-below-label",
+      "status": "OK"
+    },
+    "state": {
+      "value": "GA",
+      "confidence": 0.99,
+      "source": "layout:value-below-label",
+      "status": "OK"
+    },
+    "zip": {
+      "value": "31401",
+      "confidence": 0.99,
+      "source": "layout:value-below-label",
+      "status": "OK"
+    },
+    "tin": {
+      "masked": "**-***0934",
+      "last4": "0934",
+      "tin_type": "EIN",
+      "fingerprint": "hmac256:48d6e98d7cfae04c02dfc3d81015af19",
+      "vault_ref": "vault://tenant_acme_mfg/tin/2e2e0b0c27e3428a",
+      "confidence": 0.99,
+      "source": "layout:tin-box",
+      "status": "OK"
+    },
+    "signature_present": {
+      "value": true,
+      "confidence": 0.935,
+      "source": "layout:signature-ink",
+      "status": "OK"
+    },
+    "signature_date": {
+      "value": "2022-03-12",
+      "confidence": 0.99,
+      "source": "layout:date",
+      "status": "OK"
+    }
+  },
+  "validation_flags": [
+    {
+      "code": "OLD_FORM_REVISION",
+      "severity": "INFO",
+      "field": "form_revision",
+      "message": "Older W-9 revision (accepted by IRS, but note for audit). (2018-oct)"
+    },
+    {
+      "code": "SIGNATURE_DATE_STALE",
+      "severity": "WARNING",
+      "field": "signature_date",
+      "message": "Signature older than policy window. (1669 days old)"
+    }
+  ],
+  "match_result": {
+    "strategy": "FUZZY",
+    "best_candidate": {
+      "supplier_id": "SUP-1007",
+      "legal_name": "Wide World Importers",
+      "tin_relation": "MISSING_IN_MASTER",
+      "scores": {
+        "tin_exact": false,
+        "legal_name": 100.0,
+        "dba_name": 0.0,
+        "address": 100.0,
+        "composite": 100.0
+      },
+      "band": "AUTO_MATCH"
+    },
+    "candidates": [
+      {
+        "supplier_id": "SUP-1007",
+        "legal_name": "Wide World Importers",
+        "tin_relation": "MISSING_IN_MASTER",
+        "scores": {
+          "tin_exact": false,
+          "legal_name": 100.0,
+          "dba_name": 0.0,
+          "address": 100.0,
+          "composite": 100.0
+        },
+        "band": "AUTO_MATCH"
+      }
+    ],
+    "candidates_considered": 1,
+    "change_set": [
+      {
+        "field": "tin",
+        "current": null,
+        "proposed": "***0934",
+        "material": false
+      }
+    ]
+  },
+  "reasoning": [
+    "No TIN match. Best fuzzy candidate SUP-1007 'Wide World Importers': name 100, address 100, composite 100, TIN MISSING_IN_MASTER.",
+    "Legacy record has no TIN; name and address both corroborate -> update and backfill TIN.",
+    "Warnings (non-blocking): SIGNATURE_DATE_STALE.",
+    "Critical-field extraction confidence 0.94; identity confidence 0.85.",
+    "Automated decision: UPDATE_EXISTING_SUPPLIER -> SUP-1007."
+  ],
+  "processing": {
+    "pipeline_version": "0.3.0",
+    "policy_version": "2026-10-06.1",
+    "ocr_provider": "pdf-text-layer",
+    "extractor": "layout-v1",
+    "latency_ms": {
+      "load": 19.9,
+      "ocr": 135.1,
+      "extract": 7.4,
+      "validate": 0.2,
+      "match": 0.2,
+      "decide": 0.0
+    },
+    "estimated_cost_usd": 0.0,
+    "processed_at": "2026-10-06T11:13:17.856710Z"
+  }
+}

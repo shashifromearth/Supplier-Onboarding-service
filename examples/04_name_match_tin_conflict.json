@@ -1,0 +1,156 @@
+{
+  "schema_version": "1.0",
+  "request_id": "b85a0429baf740e991354c637bc8ba34",
+  "tenant_id": "tenant_acme_mfg",
+  "document_id": "doc_521c83047a6fc1bf",
+  "decision": "HUMAN_REVIEW",
+  "confidence": 0.484,
+  "matched_supplier_id": null,
+  "suggested_action": {
+    "decision": "CREATE_NEW_SUPPLIER",
+    "supplier_id": null,
+    "confidence": 0.484
+  },
+  "review_reasons": [
+    {
+      "code": "NAME_MATCH_TIN_CONFLICT",
+      "message": "Looks like existing supplier SUP-1003 by name/address (composite 100) but the TIN differs. Possible duplicate, new entity, or impostor."
+    }
+  ],
+  "document": {
+    "filename": "04_name_match_tin_conflict.pdf",
+    "sha256": "521c83047a6fc1bfadc8ed5cf621e8cb5f59843dec17cdc94db4f56d01d74cbb",
+    "mime_type": "application/pdf",
+    "page_count": 1,
+    "form_type": "W-9",
+    "form_revision": "2024-mar"
+  },
+  "extracted_fields": {
+    "legal_name": {
+      "value": "Contoso Ltd.",
+      "confidence": 0.99,
+      "source": "layout:value-below-label",
+      "status": "OK"
+    },
+    "dba_name": {
+      "value": null,
+      "confidence": 0.9,
+      "source": "layout",
+      "status": "NOT_PROVIDED"
+    },
+    "tax_classification": {
+      "value": "C_CORPORATION",
+      "confidence": 0.99,
+      "source": "layout:checkbox-ink",
+      "status": "OK"
+    },
+    "address": {
+      "value": "77 Market St",
+      "confidence": 0.99,
+      "source": "layout:value-below-label",
+      "status": "OK"
+    },
+    "city": {
+      "value": "Boston",
+      "confidence": 0.99,
+      "source": "layout:value-below-label",
+      "status": "OK"
+    },
+    "state": {
+      "value": "MA",
+      "confidence": 0.99,
+      "source": "layout:value-below-label",
+      "status": "OK"
+    },
+    "zip": {
+      "value": "02110",
+      "confidence": 0.99,
+      "source": "layout:value-below-label",
+      "status": "OK"
+    },
+    "tin": {
+      "masked": "**-***4012",
+      "last4": "4012",
+      "tin_type": "EIN",
+      "fingerprint": "hmac256:85ed693d2b79350c8915f62d4f2dee5f",
+      "vault_ref": "vault://tenant_acme_mfg/tin/e7b15fdf9c544b37",
+      "confidence": 0.99,
+      "source": "layout:tin-box",
+      "status": "OK"
+    },
+    "signature_present": {
+      "value": true,
+      "confidence": 0.969,
+      "source": "layout:signature-ink",
+      "status": "OK"
+    },
+    "signature_date": {
+      "value": "2026-09-25",
+      "confidence": 0.99,
+      "source": "layout:date",
+      "status": "OK"
+    }
+  },
+  "validation_flags": [],
+  "match_result": {
+    "strategy": "FUZZY",
+    "best_candidate": {
+      "supplier_id": "SUP-1003",
+      "legal_name": "Contoso Limited",
+      "tin_relation": "DIFFERENT",
+      "scores": {
+        "tin_exact": false,
+        "legal_name": 100.0,
+        "dba_name": 0.0,
+        "address": 100.0,
+        "composite": 100.0
+      },
+      "band": "AUTO_MATCH"
+    },
+    "candidates": [
+      {
+        "supplier_id": "SUP-1003",
+        "legal_name": "Contoso Limited",
+        "tin_relation": "DIFFERENT",
+        "scores": {
+          "tin_exact": false,
+          "legal_name": 100.0,
+          "dba_name": 0.0,
+          "address": 100.0,
+          "composite": 100.0
+        },
+        "band": "AUTO_MATCH"
+      }
+    ],
+    "candidates_considered": 1,
+    "change_set": [
+      {
+        "field": "tin",
+        "current": "***2098",
+        "proposed": "***4012",
+        "material": true
+      }
+    ]
+  },
+  "reasoning": [
+    "No TIN match. Best fuzzy candidate SUP-1003 'Contoso Limited': name 100, address 100, composite 100, TIN DIFFERENT.",
+    "Critical-field extraction confidence 0.97; identity confidence 0.50.",
+    "Routed to human review; suggested action: CREATE_NEW_SUPPLIER."
+  ],
+  "processing": {
+    "pipeline_version": "0.3.0",
+    "policy_version": "2026-10-06.1",
+    "ocr_provider": "pdf-text-layer",
+    "extractor": "layout-v1",
+    "latency_ms": {
+      "load": 45.5,
+      "ocr": 168.9,
+      "extract": 8.5,
+      "validate": 0.2,
+      "match": 0.3,
+      "decide": 0.0
+    },
+    "estimated_cost_usd": 0.0,
+    "processed_at": "2026-10-06T11:13:06.018477Z"
+  }
+}

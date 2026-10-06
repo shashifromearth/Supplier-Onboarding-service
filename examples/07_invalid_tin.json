@@ -1,0 +1,131 @@
+{
+  "schema_version": "1.0",
+  "request_id": "737cdcddc05f481380e58cd4fa01eae7",
+  "tenant_id": "tenant_acme_mfg",
+  "document_id": "doc_d756e400568ac9a5",
+  "decision": "HUMAN_REVIEW",
+  "confidence": 0.297,
+  "matched_supplier_id": null,
+  "suggested_action": {
+    "decision": "CREATE_NEW_SUPPLIER",
+    "supplier_id": null,
+    "confidence": 0.297
+  },
+  "review_reasons": [
+    {
+      "code": "INVALID_EIN_PREFIX",
+      "message": "EIN prefix is not one the IRS issues. (prefix 07)"
+    }
+  ],
+  "document": {
+    "filename": "07_invalid_tin.pdf",
+    "sha256": "d756e400568ac9a5d6c313d2cb5727cc4036375f0d20d5e501f43f69d1494b49",
+    "mime_type": "application/pdf",
+    "page_count": 1,
+    "form_type": "W-9",
+    "form_revision": "2024-mar"
+  },
+  "extracted_fields": {
+    "legal_name": {
+      "value": "Summit Peak Consulting LLC",
+      "confidence": 0.99,
+      "source": "layout:value-below-label",
+      "status": "OK"
+    },
+    "dba_name": {
+      "value": "Summit Peak",
+      "confidence": 0.99,
+      "source": "layout:value-below-label",
+      "status": "OK"
+    },
+    "tax_classification": {
+      "value": "LLC_P",
+      "confidence": 0.99,
+      "source": "layout:checkbox-ink",
+      "status": "OK"
+    },
+    "address": {
+      "value": "610 Aspen Way",
+      "confidence": 0.99,
+      "source": "layout:value-below-label",
+      "status": "OK"
+    },
+    "city": {
+      "value": "Boulder",
+      "confidence": 0.99,
+      "source": "layout:value-below-label",
+      "status": "OK"
+    },
+    "state": {
+      "value": "CO",
+      "confidence": 0.99,
+      "source": "layout:value-below-label",
+      "status": "OK"
+    },
+    "zip": {
+      "value": "80302",
+      "confidence": 0.99,
+      "source": "layout:value-below-label",
+      "status": "OK"
+    },
+    "tin": {
+      "masked": "**-***8290",
+      "last4": "8290",
+      "tin_type": "EIN",
+      "fingerprint": "hmac256:9444e32a4d357f390ea6241a30bbf2ea",
+      "vault_ref": "vault://tenant_acme_mfg/tin/66c0c2ed4de44dc7",
+      "confidence": 0.3,
+      "source": "layout:tin-box",
+      "status": "LOW_CONFIDENCE"
+    },
+    "signature_present": {
+      "value": true,
+      "confidence": 0.97,
+      "source": "layout:signature-ink",
+      "status": "OK"
+    },
+    "signature_date": {
+      "value": "2026-09-30",
+      "confidence": 0.99,
+      "source": "layout:date",
+      "status": "OK"
+    }
+  },
+  "validation_flags": [
+    {
+      "code": "INVALID_EIN_PREFIX",
+      "severity": "BLOCKING",
+      "field": "tin",
+      "message": "EIN prefix is not one the IRS issues. (prefix 07)"
+    }
+  ],
+  "match_result": {
+    "strategy": "NONE",
+    "best_candidate": null,
+    "candidates": [],
+    "candidates_considered": 0,
+    "change_set": []
+  },
+  "reasoning": [
+    "No TIN match and no candidate above the review threshold (no candidates).",
+    "1 blocking validation issue(s): INVALID_EIN_PREFIX.",
+    "Critical-field extraction confidence 0.30; identity confidence 0.99.",
+    "Routed to human review; suggested action: CREATE_NEW_SUPPLIER."
+  ],
+  "processing": {
+    "pipeline_version": "0.3.0",
+    "policy_version": "2026-10-06.1",
+    "ocr_provider": "pdf-text-layer",
+    "extractor": "layout-v1",
+    "latency_ms": {
+      "load": 33.2,
+      "ocr": 185.1,
+      "extract": 7.9,
+      "validate": 0.3,
+      "match": 0.2,
+      "decide": 0.0
+    },
+    "estimated_cost_usd": 0.0,
+    "processed_at": "2026-10-06T11:13:06.650051Z"
+  }
+}

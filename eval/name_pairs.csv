@@ -1,0 +1,41 @@
+name_a,name_b,same_entity,note
+Acme Corporation,Acme Corp,1,suffix abbreviation
+Acme Corporation,ACME CORPORATION INC,1,case + extra suffix
+Acme Corporation,"Acme, Corp.",1,punctuation
+Acme Industrial Supply Inc,Acme Industrial Supply Company,1,suffix variant
+Contoso Ltd.,Contoso Limited,1,ltd vs limited
+Litware Inc,"Litware, Inc.",1,punctuation
+Wide World Importers LLC,Wide World Importers,1,suffix dropped
+The Phone Company,Phone Company Inc,1,leading article
+Johnson & Johnson Consulting,Johnson and Johnson Consulting,1,ampersand
+Northwind Traders LLC,Northwind Traders,1,suffix dropped
+Fourth Coffee Company,Fourth Coffee Co,1,co vs company
+A. Datum Corporation,A Datum Corp,1,initial punctuation
+Trey Research Inc,Trey Research Incorporated,1,inc vs incorporated
+Proseware Inc,"PROSEWARE, INC.",1,case + punctuation
+Tailspin Toys Co,Tailspin Toy Company Inc,1,plural drift (true dup per our labelers)
+Coho Winery,Coho Winery Holdings LLC,1,holding suffix
+Margies Travel,Margie's Travel,1,apostrophe
+Best For You Organics Company,Best 4 You Organics Co,1,digit substitution
+Alpine Ski House LLC,Alpine Ski House,1,suffix dropped
+Blue Yonder Airlines,Blue Yonder Airlines Inc,1,suffix added
+Northwind Traders LLC,Northwind Electric Cars,0,shared first token
+Blue Yonder Airlines,Blue Yonder Freight Partners LP,0,shared first two tokens
+Acme Industrial Supply Inc,Acme Packaging Co,0,shared brand token
+Bluewater Analytics LLC,Bluewater Marine Supply,0,shared first token
+Contoso Pharmaceuticals,Contoso Limited,0,shared brand token
+ABC Plumbing,ABC Plumbing Supply,0,subset name - different business
+Summit Peak Consulting LLC,Summit Peak Construction LLC,0,one word differs
+Fabrikam Inc,Fabrikam Fiber Inc,0,subset name
+Coho Winery,Coho Vineyard & Winery,0,similar brand - different entity
+First National Bank of Ohio,First National Bank of Iowa,0,one token (state) differs
+Graphic Design Institute,Graphic Design Studio,0,one token differs
+Lucerne Publishing,Lucerne Printing,0,similar word
+Relecloud Inc,Relecloud Services Inc,0,subset name
+Trey Research Inc,Grey Research Inc,0,one character differs
+Woodgrove Supply Partners,Woodgrove Bank,0,shared brand
+Adventure Works Cycles,Adventure Works,0,subset - parent vs subsidiary
+Southridge Video LLC,Southridge Audio LLC,0,one token differs
+Humongous Insurance,Humongous Insurance Agency of Texas,0,subset - agency vs carrier
+Gonzalez Landscaping,Gonzales Landscaping,0,one character - different family business
+Smith & Sons Roofing,Smith and Son Roofing,1,ampersand + plural drift

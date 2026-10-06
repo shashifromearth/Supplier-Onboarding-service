@@ -1,0 +1,153 @@
+{
+  "schema_version": "1.0",
+  "request_id": "aa7e7dbcfd464abe8dffbe0b36af3087",
+  "tenant_id": "tenant_globex",
+  "document_id": "doc_9326c29a9f58334a",
+  "decision": "CREATE_NEW_SUPPLIER",
+  "confidence": 0.755,
+  "matched_supplier_id": null,
+  "suggested_action": null,
+  "review_reasons": [],
+  "document": {
+    "filename": "13_cross_tenant_isolation.pdf",
+    "sha256": "9326c29a9f58334af6a516fef232cd0c8ad951345f0503140fe16b79683b03ae",
+    "mime_type": "application/pdf",
+    "page_count": 1,
+    "form_type": "W-9",
+    "form_revision": "2024-mar"
+  },
+  "extracted_fields": {
+    "legal_name": {
+      "value": "Acme Industrial Supply, Inc.",
+      "confidence": 0.99,
+      "source": "layout:value-below-label",
+      "status": "OK"
+    },
+    "dba_name": {
+      "value": "Acme Supply",
+      "confidence": 0.99,
+      "source": "layout:value-below-label",
+      "status": "OK"
+    },
+    "tax_classification": {
+      "value": "C_CORPORATION",
+      "confidence": 0.99,
+      "source": "layout:checkbox-ink",
+      "status": "OK"
+    },
+    "address": {
+      "value": "1200 W Lake St",
+      "confidence": 0.99,
+      "source": "layout:value-below-label",
+      "status": "OK"
+    },
+    "city": {
+      "value": "Chicago",
+      "confidence": 0.99,
+      "source": "layout:value-below-label",
+      "status": "OK"
+    },
+    "state": {
+      "value": "IL",
+      "confidence": 0.99,
+      "source": "layout:value-below-label",
+      "status": "OK"
+    },
+    "zip": {
+      "value": "60607",
+      "confidence": 0.99,
+      "source": "layout:value-below-label",
+      "status": "OK"
+    },
+    "tin": {
+      "masked": "**-***7265",
+      "last4": "7265",
+      "tin_type": "EIN",
+      "fingerprint": "hmac256:549b184e852b4601d79b122e0668fe76",
+      "vault_ref": "vault://tenant_globex/tin/77c8d5188b984390",
+      "confidence": 0.99,
+      "source": "layout:tin-box",
+      "status": "OK"
+    },
+    "signature_present": {
+      "value": true,
+      "confidence": 0.97,
+      "source": "layout:signature-ink",
+      "status": "OK"
+    },
+    "signature_date": {
+      "value": "2026-09-02",
+      "confidence": 0.99,
+      "source": "layout:date",
+      "status": "OK"
+    }
+  },
+  "validation_flags": [],
+  "match_result": {
+    "strategy": "NONE",
+    "best_candidate": {
+      "supplier_id": "GBX-2004",
+      "legal_name": "Vandelay Industries",
+      "tin_relation": "DIFFERENT",
+      "scores": {
+        "tin_exact": false,
+        "legal_name": 53.7,
+        "dba_name": 31.6,
+        "address": 37.7,
+        "composite": 48.9
+      },
+      "band": "NO_MATCH"
+    },
+    "candidates": [
+      {
+        "supplier_id": "GBX-2004",
+        "legal_name": "Vandelay Industries",
+        "tin_relation": "DIFFERENT",
+        "scores": {
+          "tin_exact": false,
+          "legal_name": 53.7,
+          "dba_name": 31.6,
+          "address": 37.7,
+          "composite": 48.9
+        },
+        "band": "NO_MATCH"
+      },
+      {
+        "supplier_id": "GBX-2005",
+        "legal_name": "Acme Packaging Co",
+        "tin_relation": "DIFFERENT",
+        "scores": {
+          "tin_exact": false,
+          "legal_name": 40.0,
+          "dba_name": 48.0,
+          "address": 18.3,
+          "composite": 39.1
+        },
+        "band": "NO_MATCH"
+      }
+    ],
+    "candidates_considered": 2,
+    "change_set": []
+  },
+  "reasoning": [
+    "No TIN match and no candidate above the review threshold (best: GBX-2004 composite 49).",
+    "Critical-field extraction confidence 0.97; identity confidence 0.78.",
+    "Automated decision: CREATE_NEW_SUPPLIER."
+  ],
+  "processing": {
+    "pipeline_version": "0.3.0",
+    "policy_version": "2026-10-06.1",
+    "ocr_provider": "pdf-text-layer",
+    "extractor": "layout-v1",
+    "latency_ms": {
+      "load": 16.3,
+      "ocr": 142.6,
+      "extract": 7.3,
+      "validate": 0.1,
+      "match": 0.3,
+      "decide": 0.0
+    },
+    "estimated_cost_usd": 0.0,
+    "processed_at": "2026-10-06T11:13:18.027700Z"
+  }
+}

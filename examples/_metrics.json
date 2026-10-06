@@ -1,0 +1,111 @@
+{
+  "counters": {
+    "w9_documents_total{decision=CREATE_NEW_SUPPLIER,tenant=tenant_acme_mfg}": 2.0,
+    "w9_documents_total{decision=UPDATE_EXISTING_SUPPLIER,tenant=tenant_acme_mfg}": 4.0,
+    "w9_documents_total{decision=HUMAN_REVIEW,tenant=tenant_acme_mfg}": 6.0,
+    "w9_review_reasons_total{code=NAME_MATCH_TIN_CONFLICT}": 1.0,
+    "w9_review_reasons_total{code=TIN_NAME_CONFLICT}": 1.0,
+    "w9_validation_flags_total{code=MISSING_SIGNATURE,severity=BLOCKING}": 1.0,
+    "w9_review_reasons_total{code=MISSING_SIGNATURE}": 1.0,
+    "w9_validation_flags_total{code=INVALID_EIN_PREFIX,severity=BLOCKING}": 1.0,
+    "w9_review_reasons_total{code=INVALID_EIN_PREFIX}": 1.0,
+    "w9_review_reasons_total{code=FUZZY_MATCH_REVIEW_BAND}": 1.0,
+    "w9_validation_flags_total{code=FORM_TYPE_NOT_W9,severity=BLOCKING}": 1.0,
+    "w9_review_reasons_total{code=FORM_TYPE_NOT_W9}": 1.0,
+    "w9_validation_flags_total{code=OLD_FORM_REVISION,severity=INFO}": 1.0,
+    "w9_validation_flags_total{code=SIGNATURE_DATE_STALE,severity=WARNING}": 1.0,
+    "w9_documents_total{decision=CREATE_NEW_SUPPLIER,tenant=tenant_globex}": 1.0
+  },
+  "histograms": {
+    "w9_stage_latency_ms{stage=load}": {
+      "count": 13,
+      "p50": 32.922694999797386,
+      "p95": 57.147132999944006,
+      "mean": 32.42046215382288
+    },
+    "w9_stage_latency_ms{stage=ocr}": {
+      "count": 13,
+      "p50": 155.9021230000326,
+      "p95": 5602.465629000108,
+      "mean": 951.1223989999892
+    },
+    "w9_stage_latency_ms{stage=extract}": {
+      "count": 13,
+      "p50": 7.695886999954382,
+      "p95": 10.794239999995625,
+      "mean": 7.489198692278128
+    },
+    "w9_stage_latency_ms{stage=validate}": {
+      "count": 13,
+      "p50": 0.1645339998503914,
+      "p95": 0.37019599994891905,
+      "mean": 0.18573653845193733
+    },
+    "w9_stage_latency_ms{stage=match}": {
+      "count": 13,
+      "p50": 0.26945699983116356,
+      "p95": 0.6006409998917661,
+      "mean": 0.2901216153776869
+    },
+    "w9_stage_latency_ms{stage=decide}": {
+      "count": 13,
+      "p50": 0.032358000225940486,
+      "p95": 0.06696299988107057,
+      "mean": 0.03542823074335152
+    },
+    "w9_decision_confidence{decision=CREATE_NEW_SUPPLIER}": {
+      "count": 3,
+      "p50": 0.771,
+      "p95": 0.918,
+      "mean": 0.8146666666666667
+    },
+    "w9_field_confidence{field=legal_name}": {
+      "count": 13,
+      "p50": 0.99,
+      "p95": 0.99,
+      "mean": 0.9107692307692308
+    },
+    "w9_field_confidence{field=tax_classification}": {
+      "count": 13,
+      "p50": 0.99,
+      "p95": 0.99,
+      "mean": 0.8998461538461539
+    },
+    "w9_field_confidence{field=address}": {
+      "count": 13,
+      "p50": 0.99,
+      "p95": 0.99,
+      "mean": 0.9107692307692308
+    },
+    "w9_field_confidence{field=signature_present}": {
+      "count": 13,
+      "p50": 0.969,
+      "p95": 0.97,
+      "mean": 0.8841538461538462
+    },
+    "w9_field_confidence{field=tin}": {
+      "count": 13,
+      "p50": 0.99,
+      "p95": 0.99,
+      "mean": 0.8576923076923078
+    },
+    "w9_best_match_composite": {
+      "count": 9,
+      "p50": 83.4,
+      "p95": 100.0,
+      "mean": 77.76666666666667
+    },
+    "w9_decision_confidence{decision=UPDATE_EXISTING_SUPPLIER}": {
+      "count": 4,
+      "p50": 0.96,
+      "p95": 0.96,
+      "mean": 0.89425
+    },
+    "w9_decision_confidence{decision=HUMAN_REVIEW}": {
+      "count": 6,
+      "p50": 0.484,
+      "p95": 0.921,
+      "mean": 0.4283333333333333
+    }
+  }
+}

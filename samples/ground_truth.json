@@ -1,0 +1,294 @@
+[
+  {
+    "file": "01_new_supplier_clean.pdf",
+    "tenant_id": "tenant_acme_mfg",
+    "purpose": "Clean digital W-9 from a supplier not in the master",
+    "fields": {
+      "legal_name": "Bluewater Analytics LLC",
+      "dba_name": null,
+      "tax_classification": "LLC_S",
+      "address": "2140 Riverside Dr Ste 210",
+      "city": "Austin",
+      "state": "TX",
+      "zip": "78741",
+      "tin": "743091862",
+      "tin_type": "EIN",
+      "signature_present": true,
+      "signature_date": "2026-09-14"
+    },
+    "expected": {
+      "decision": "CREATE_NEW_SUPPLIER",
+      "supplier_id": null
+    }
+  },
+  {
+    "file": "02_existing_refresh.pdf",
+    "tenant_id": "tenant_acme_mfg",
+    "purpose": "Existing supplier re-submits W-9; name formatted differently, same TIN",
+    "fields": {
+      "legal_name": "Acme Industrial Supply, Inc.",
+      "dba_name": "Acme Supply",
+      "tax_classification": "C_CORPORATION",
+      "address": "1200 W Lake St",
+      "city": "Chicago",
+      "state": "IL",
+      "zip": "60607",
+      "tin": "364817265",
+      "tin_type": "EIN",
+      "signature_present": true,
+      "signature_date": "2026-09-02"
+    },
+    "expected": {
+      "decision": "UPDATE_EXISTING_SUPPLIER",
+      "supplier_id": "SUP-1001"
+    }
+  },
+  {
+    "file": "03_existing_address_change.pdf",
+    "tenant_id": "tenant_acme_mfg",
+    "purpose": "Same TIN + name, new address -> update with non-material change flagged",
+    "fields": {
+      "legal_name": "Northwind Traders LLC",
+      "dba_name": null,
+      "tax_classification": "LLC_C",
+      "address": "900 Pacific Ave Suite 300",
+      "city": "Tacoma",
+      "state": "WA",
+      "zip": "98402",
+      "tin": "412938476",
+      "tin_type": "EIN",
+      "signature_present": true,
+      "signature_date": "2026-09-21"
+    },
+    "expected": {
+      "decision": "UPDATE_EXISTING_SUPPLIER",
+      "supplier_id": "SUP-1002"
+    }
+  },
+  {
+    "file": "04_name_match_tin_conflict.pdf",
+    "tenant_id": "tenant_acme_mfg",
+    "purpose": "Name + address look identical to an existing supplier but TIN differs (duplicate or impostor?)",
+    "fields": {
+      "legal_name": "Contoso Ltd.",
+      "dba_name": null,
+      "tax_classification": "C_CORPORATION",
+      "address": "77 Market St",
+      "city": "Boston",
+      "state": "MA",
+      "zip": "02110",
+      "tin": "279934012",
+      "tin_type": "EIN",
+      "signature_present": true,
+      "signature_date": "2026-09-25"
+    },
+    "expected": {
+      "decision": "HUMAN_REVIEW",
+      "supplier_id": null,
+      "review_code": "NAME_MATCH_TIN_CONFLICT"
+    }
+  },
+  {
+    "file": "05_same_tin_different_name.pdf",
+    "tenant_id": "tenant_acme_mfg",
+    "purpose": "TIN already on file under a different legal name (restructure, or payment-redirect fraud)",
+    "fields": {
+      "legal_name": "Blue Yonder Freight Partners LP",
+      "dba_name": null,
+      "tax_classification": "PARTNERSHIP",
+      "address": "3100 Industrial Pkwy",
+      "city": "Dayton",
+      "state": "OH",
+      "zip": "45414",
+      "tin": "521847390",
+      "tin_type": "EIN",
+      "signature_present": true,
+      "signature_date": "2026-09-28"
+    },
+    "expected": {
+      "decision": "HUMAN_REVIEW",
+      "supplier_id": null,
+      "review_code": "TIN_NAME_CONFLICT"
+    }
+  },
+  {
+    "file": "06_missing_signature.pdf",
+    "tenant_id": "tenant_acme_mfg",
+    "purpose": "New supplier, form not signed -> invalid for tax reporting",
+    "fields": {
+      "legal_name": "Riverbend Catering Co",
+      "dba_name": null,
+      "tax_classification": "S_CORPORATION",
+      "address": "45 Mill St",
+      "city": "Burlington",
+      "state": "VT",
+      "zip": "05401",
+      "tin": "035527714",
+      "tin_type": "EIN",
+      "signature_present": false,
+      "signature_date": null
+    },
+    "expected": {
+      "decision": "HUMAN_REVIEW",
+      "supplier_id": null,
+      "review_code": "MISSING_SIGNATURE"
+    }
+  },
+  {
+    "file": "07_invalid_tin.pdf",
+    "tenant_id": "tenant_acme_mfg",
+    "purpose": "EIN with a prefix the IRS never issues",
+    "fields": {
+      "legal_name": "Summit Peak Consulting LLC",
+      "dba_name": "Summit Peak",
+      "tax_classification": "LLC_P",
+      "address": "610 Aspen Way",
+      "city": "Boulder",
+      "state": "CO",
+      "zip": "80302",
+      "tin": "074418290",
+      "tin_type": "EIN",
+      "signature_present": true,
+      "signature_date": "2026-09-30"
+    },
+    "expected": {
+      "decision": "HUMAN_REVIEW",
+      "supplier_id": null,
+      "review_code": "INVALID_EIN_PREFIX"
+    }
+  },
+  {
+    "file": "08_fuzzy_ambiguous.pdf",
+    "tenant_id": "tenant_acme_mfg",
+    "purpose": "Similar name to a legacy record with no TIN on file; address differs -> ambiguous",
+    "fields": {
+      "legal_name": "Tailspin Toys Co",
+      "dba_name": null,
+      "tax_classification": "C_CORPORATION",
+      "address": "18 Elm Rd",
+      "city": "Akron",
+      "state": "OH",
+      "zip": "44308",
+      "tin": "463301299",
+      "tin_type": "EIN",
+      "signature_present": true,
+      "signature_date": "2026-10-01"
+    },
+    "expected": {
+      "decision": "HUMAN_REVIEW",
+      "supplier_id": null,
+      "review_code": "FUZZY_MATCH_REVIEW_BAND"
+    }
+  },
+  {
+    "file": "09_phone_photo_existing.jpg",
+    "tenant_id": "tenant_acme_mfg",
+    "purpose": "Phone photo (skew, blur, noise) of an existing supplier's W-9",
+    "fields": {
+      "legal_name": "Litware Inc",
+      "dba_name": null,
+      "tax_classification": "C_CORPORATION",
+      "address": "2450 Bayshore Pkwy",
+      "city": "Mountain View",
+      "state": "CA",
+      "zip": "94043",
+      "tin": "943328810",
+      "tin_type": "EIN",
+      "signature_present": true,
+      "signature_date": "2026-09-17"
+    },
+    "expected": {
+      "decision": "UPDATE_EXISTING_SUPPLIER",
+      "supplier_id": "SUP-1006"
+    }
+  },
+  {
+    "file": "10_wrong_form_w8ben.pdf",
+    "tenant_id": "tenant_acme_mfg",
+    "purpose": "Foreign supplier sent a W-8BEN instead of a W-9",
+    "fields": {
+      "legal_name": null,
+      "dba_name": null,
+      "tax_classification": null,
+      "address": null,
+      "city": null,
+      "state": null,
+      "zip": null,
+      "tin": null,
+      "tin_type": null,
+      "signature_present": null,
+      "signature_date": null
+    },
+    "expected": {
+      "decision": "HUMAN_REVIEW",
+      "supplier_id": null,
+      "review_code": "FORM_TYPE_NOT_W9"
+    }
+  },
+  {
+    "file": "11_sole_prop_ssn.png",
+    "tenant_id": "tenant_acme_mfg",
+    "purpose": "Sole proprietor using an SSN, scanned image",
+    "fields": {
+      "legal_name": "Maria L Gonzalez",
+      "dba_name": "Gonzalez Landscaping",
+      "tax_classification": "INDIVIDUAL_SOLE_PROPRIETOR",
+      "address": "1934 Cactus Wren Ln",
+      "city": "Mesa",
+      "state": "AZ",
+      "zip": "85203",
+      "tin": "523814470",
+      "tin_type": "SSN",
+      "signature_present": true,
+      "signature_date": "2026-09-08"
+    },
+    "expected": {
+      "decision": "CREATE_NEW_SUPPLIER",
+      "supplier_id": null
+    }
+  },
+  {
+    "file": "12_rev2018_tin_backfill.pdf",
+    "tenant_id": "tenant_acme_mfg",
+    "purpose": "Old form revision; legacy master record has no TIN -> backfill (name+address corroborate)",
+    "fields": {
+      "legal_name": "Wide World Importers LLC",
+      "dba_name": null,
+      "tax_classification": "LLC_C",
+      "address": "88 Dockside Ave",
+      "city": "Savannah",
+      "state": "GA",
+      "zip": "31401",
+      "tin": "582210934",
+      "tin_type": "EIN",
+      "signature_present": true,
+      "signature_date": "2022-03-12"
+    },
+    "expected": {
+      "decision": "UPDATE_EXISTING_SUPPLIER",
+      "supplier_id": "SUP-1007"
+    }
+  },
+  {
+    "file": "13_cross_tenant_isolation.pdf",
+    "tenant_id": "tenant_globex",
+    "purpose": "Same supplier as #02 but submitted to a different tenant: must NOT match tenant_acme_mfg's record",
+    "fields": {
+      "legal_name": "Acme Industrial Supply, Inc.",
+      "dba_name": "Acme Supply",
+      "tax_classification": "C_CORPORATION",
+      "address": "1200 W Lake St",
+      "city": "Chicago",
+      "state": "IL",
+      "zip": "60607",
+      "tin": "364817265",
+      "tin_type": "EIN",
+      "signature_present": true,
+      "signature_date": "2026-09-02"
+    },
+    "expected": {
+      "decision": "CREATE_NEW_SUPPLIER",
+      "supplier_id": null
+    }
+  }
+]

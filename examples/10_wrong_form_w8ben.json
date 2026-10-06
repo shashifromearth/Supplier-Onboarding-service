@@ -1,0 +1,127 @@
+{
+  "schema_version": "1.0",
+  "request_id": "6b7665c07d3f40aaae350a30d5a9b40c",
+  "tenant_id": "tenant_acme_mfg",
+  "document_id": "doc_d7058577caf0dd00",
+  "decision": "HUMAN_REVIEW",
+  "confidence": 0.0,
+  "matched_supplier_id": null,
+  "suggested_action": null,
+  "review_reasons": [
+    {
+      "code": "FORM_TYPE_NOT_W9",
+      "message": "Document is a W-8BEN, not a W-9; request the correct form."
+    }
+  ],
+  "document": {
+    "filename": "10_wrong_form_w8ben.pdf",
+    "sha256": "d7058577caf0dd00f2103eba31ae64b734c08d963c768fd23cde204d30769e87",
+    "mime_type": "application/pdf",
+    "page_count": 1,
+    "form_type": "W-8BEN",
+    "form_revision": null
+  },
+  "extracted_fields": {
+    "legal_name": {
+      "value": null,
+      "confidence": 0.0,
+      "source": "",
+      "status": "MISSING"
+    },
+    "dba_name": {
+      "value": null,
+      "confidence": 0.0,
+      "source": "",
+      "status": "MISSING"
+    },
+    "tax_classification": {
+      "value": null,
+      "confidence": 0.0,
+      "source": "",
+      "status": "MISSING"
+    },
+    "address": {
+      "value": null,
+      "confidence": 0.0,
+      "source": "",
+      "status": "MISSING"
+    },
+    "city": {
+      "value": null,
+      "confidence": 0.0,
+      "source": "",
+      "status": "MISSING"
+    },
+    "state": {
+      "value": null,
+      "confidence": 0.0,
+      "source": "",
+      "status": "MISSING"
+    },
+    "zip": {
+      "value": null,
+      "confidence": 0.0,
+      "source": "",
+      "status": "MISSING"
+    },
+    "tin": {
+      "masked": null,
+      "last4": null,
+      "tin_type": "UNKNOWN",
+      "fingerprint": null,
+      "vault_ref": null,
+      "confidence": 0.0,
+      "source": "",
+      "status": "MISSING"
+    },
+    "signature_present": {
+      "value": null,
+      "confidence": 0.0,
+      "source": "",
+      "status": "MISSING"
+    },
+    "signature_date": {
+      "value": null,
+      "confidence": 0.0,
+      "source": "",
+      "status": "MISSING"
+    }
+  },
+  "validation_flags": [
+    {
+      "code": "FORM_TYPE_NOT_W9",
+      "severity": "BLOCKING",
+      "field": "form_type",
+      "message": "Document is not a W-9 (e.g. W-8BEN from a foreign supplier). (detected: W-8BEN)"
+    }
+  ],
+  "match_result": {
+    "strategy": "NONE",
+    "best_candidate": null,
+    "candidates": [],
+    "candidates_considered": 0,
+    "change_set": []
+  },
+  "reasoning": [
+    "Form detected as W-8BEN; W-9 matching not attempted.",
+    "1 blocking validation issue(s): FORM_TYPE_NOT_W9.",
+    "Critical-field extraction confidence 0.00; identity confidence 0.00.",
+    "Routed to human review; suggested action: HUMAN_REVIEW."
+  ],
+  "processing": {
+    "pipeline_version": "0.3.0",
+    "policy_version": "2026-10-06.1",
+    "ocr_provider": "pdf-text-layer",
+    "extractor": "layout-v1",
+    "latency_ms": {
+      "load": 29.0,
+      "ocr": 85.7,
+      "extract": 0.1,
+      "validate": 0.1,
+      "match": 0.0,
+      "decide": 0.1
+    },
+    "estimated_cost_usd": 0.0,
+    "processed_at": "2026-10-06T11:13:12.046112Z"
+  }
+}
