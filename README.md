@@ -1,2 +1,172 @@
-# Supplier-Onboarding-service
-Supplier Onboarding service
+# W-9 Supplier Onboarding Service (prototype)
+
+AI-assisted service that reads a W-9 (PDF/PNG/JPG), extracts supplier fields with **per-field confidence**, validates them, matches against the tenant's supplier master, and returns a structured decision: `CREATE_NEW_SUPPLIER`, `UPDATE_EXISTING_SUPPLIER` or `HUMAN_REVIEW`, with reasons.
+
+- **Design document (6–10 pages):** [`docs/DESIGN.pdf`](docs/DESIGN.pdf) ([source](docs/DESIGN.md)); every rule table and the full JSON example are in [`docs/DESIGN_DETAILED.md`](docs/DESIGN_DETAILED.md)
+- **Production readiness (millions of documents/day, real tools, steps):** [`docs/PRODUCTION_READINESS.md`](docs/PRODUCTION_READINESS.md)
+- **Output contract:** [`schemas/onboarding_response.v1.json`](schemas/onboarding_response.v1.json), with examples for every sample in [`examples/`](examples/)
+
+## Quick start (no API keys needed)
+
+**Requirements:** Python **3.10, 3.11 or 3.12** (3.13+ is not supported yet: the local OCR package `rapidocr_onnxruntime` has no wheel for it). Run everything from the repository root.
+
+**Windows (PowerShell)**: run these one line at a time, top to bottom.
+
+```powershell
+git clone https://github.com/shashifromearth/Supplier-Onboarding-service.git
+cd Supplier-Onboarding-service
+python -m venv .venv
+.venv\Scripts\Activate.ps1          # if blocked: Set-ExecutionPolicy -Scope Process Bypass
+pip install -r requirements.txt
+
+# one document -> JSON on stdout (logs on stderr)
+python src/main.py process samples/documents/05_same_tin_different_name.pdf --tenant tenant_acme_mfg
+
+# all 13 sample documents -> outputs/*.json + outputs/_metrics.json
+python src/main.py batch samples/documents --manifest samples/ground_truth.json --out outputs --as-of 2026-10-06
+
+# evaluation (field precision/recall, calibration, decision accuracy, false-match rate, review rate)
+python eval/evaluate.py
+python eval/evaluate.py --variant scan
+
+python -m pytest -q
+```
+
+**macOS / Linux**
+
+```bash
+git clone https://github.com/shashifromearth/Supplier-Onboarding-service.git
+cd Supplier-Onboarding-service
+python3 -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
+
+python src/main.py process samples/documents/05_same_tin_different_name.pdf --tenant tenant_acme_mfg
+python src/main.py batch samples/documents --manifest samples/ground_truth.json --out outputs --as-of 2026-10-06
+python eval/evaluate.py
+python eval/evaluate.py --variant scan      # every sample re-rendered as a degraded phone photo
+python -m pytest -q                         # 75 tests, fakes only, no network
+```
+
+Expected: `process` prints a JSON decision (`HUMAN_REVIEW`, reason `TIN_NAME_CONFLICT` for this document); `batch` prints a 13-row table where every row matches the "Expected" column below; `pytest` ends with `75 passed`. The first image run takes a few seconds to initialise the OCR models (they ship inside the pip wheel, no download).
+
+## What to look at first
+
+1. **`examples/04_name_match_tin_conflict.json`** and **`examples/05_same_tin_different_name.json`**: the two fraud-shaped cases. Look at `review_reasons`, `suggested_action` and `reasoning`.
+2. **`src/w9_onboarding/services/decision_engine.py`**: the whole business policy in one readable, ordered rule list.
+3. **`eval/report_scan.md`**: what happens on degraded photos. Accuracy drops, but false matches and duplicates stay at 0%. Errors become review cost, not bad data.
+4. **`services/extraction/llm_extractor.py` → `llm_input_lines` and `LLMExtractor.from_payload`**: the TIN never reaches the LLM, and LLM values must be grounded in the parsed text.
+
+## Sample scenarios
+
+| # | Document | Tenant | Expected |
+|---|---|---|---|
+| 01 | Clean new supplier | acme | CREATE_NEW_SUPPLIER |
+| 02 | Existing supplier, name formatted differently, same EIN | acme | UPDATE → SUP-1001 (W-9 refresh) |
+| 03 | Same EIN, new address | acme | UPDATE → SUP-1002 (non-material change) |
+| 04 | Name/address identical to an existing supplier, **different EIN** | acme | REVIEW `NAME_MATCH_TIN_CONFLICT` |
+| 05 | Existing EIN under a **different legal name** | acme | REVIEW `TIN_NAME_CONFLICT` |
+| 06 | Unsigned | acme | REVIEW `MISSING_SIGNATURE` |
+| 07 | EIN with invalid IRS prefix | acme | REVIEW `INVALID_EIN_PREFIX` |
+| 08 | Similar name to a legacy record without TIN, different city | acme | REVIEW `FUZZY_MATCH_REVIEW_BAND` |
+| 09 | Phone photo (skew/blur/noise) of existing supplier | acme | UPDATE → SUP-1006 |
+| 10 | W-8BEN instead of W-9 | acme | REVIEW `FORM_TYPE_NOT_W9` |
+| 11 | Sole proprietor with SSN + DBA, scanned PNG | acme | CREATE_NEW_SUPPLIER |
+| 12 | 2018 form revision; legacy record without TIN | acme | UPDATE → SUP-1007 (TIN backfill) |
+| 13 | Same supplier as #02, **different tenant** | globex | CREATE_NEW_SUPPLIER (isolation) |
+
+All data is synthetic. The forms are simplified W-9 replicas generated by `scripts/generate_samples.py`.
+
+## Pipeline
+
+```
+file ─▶ ocr.py ─▶ extractor.py (layout + LLM) ─▶ validator.py ─▶ matcher.py ─▶ decision_engine.py ─▶ response_builder.py ─▶ JSON
+        text layer   layout (det.)    IRS rules      TIN blind index   ordered rules       TIN → vault,
+        / LlamaParse / Gemini→Groq    + confidence   + RapidFuzz       + review reasons    masked output
+        / RapidOCR   / hybrid         caps           name/DBA/address
+```
+
+`services/pipeline.py` orchestrates and records spans and metrics. `config.py` holds every threshold.
+
+## Live mode: LlamaParse + Gemini (first) + Groq (fallback), all optional
+
+```bash
+# 1. create your .env from the template, then open it and paste your own keys
+cp .env.example .env              # PowerShell: Copy-Item .env.example .env
+# 2. first thing to run: shows which keys are set (never prints them) and runs one document live
+python scripts/live_smoke.py samples/documents/09_phone_photo_existing.jpg
+# 3. a full document through LlamaParse + Gemini (-> Groq)
+python src/main.py process samples/documents/09_phone_photo_existing.jpg --tenant tenant_acme_mfg --ocr llamaparse --extractor hybrid
+# 4. all 13 samples live (recommended: auto uses LlamaParse only for scans/photos, so digital PDFs cost nothing to parse)
+python src/main.py batch samples/documents --manifest samples/ground_truth.json --out outputs_live --as-of 2026-10-06 --ocr auto --extractor hybrid
+```
+
+Alternatively set the variables in the shell: PowerShell `$env:LLAMA_CLOUD_API_KEY="..."`, bash `export LLAMA_CLOUD_API_KEY=...` (same for `GEMINI_API_KEY`, `GROQ_API_KEY`; set one or both LLM keys).
+
+- **Keys come only from the environment or `.env`.** They are never written to code, docs or logs. If a key was ever pasted into a chat or ticket, rotate it.
+- `LlamaParse` runs with `tier=agentic` (override: `LLAMAPARSE_TIER=cost_effective`). It is a **third-party processor and sees the unredacted document**; Groq sees only TIN-redacted text. See DESIGN.md §4 before sending real PII.
+- **LLM order is fixed: Gemini first, Groq second.** Gemini (`gemini-2.5-flash`, `GEMINI_MODEL` to change) goes through Google's OpenAI-compatible Chat Completions endpoint; Groq (`openai/gpt-oss-20b`, `GROQ_MODEL`) through the Responses API. If Gemini returns an HTTP error status, times out, or returns unusable JSON twice, the same document is sent to Groq. Only providers whose key is set are used. Use a **paid / no-training tier** for Gemini before sending real data. It is **text-only**, so checkbox and signature are read by the deterministic pixel reader, and the LLM abstains on them.
+- If every LLM provider fails, the hybrid falls back to the layout reader and adds the `SECOND_READER_UNAVAILABLE` warning. If LlamaParse fails, `--ocr auto` falls back to local OCR.
+- `--ocr auto` (default) uses LlamaParse when `LLAMA_CLOUD_API_KEY` is set. `--extractor auto` uses `hybrid` when `GEMINI_API_KEY` or `GROQ_API_KEY` is set.
+
+## Trade-offs I made
+
+- **Deterministic first, LLM as a grounded second reader.** The offline layout extractor is exact and free on known layouts. The LLM (Gemini, falling back to Groq) adds robustness on unseen ones. The hybrid reconciles them per field, and agreement is the strongest confidence signal available.
+- **TIN-first identity, fuzzy matching as corroboration.** Names alone are only ~95% precise even at a 95 threshold (`eval/name_pairs.csv`), so they never auto-merge on their own.
+- **Optimise for zero wrong merges, then review rate.** A wrong update can redirect payments. A review costs about two minutes.
+- **Calibrated confidence.** Raw OCR confidence is not a probability. A per-provider isotonic map, fitted on a *separate* synthetic set, makes the thresholds meaningful.
+- **Recommendation, not write.** The service never writes the supplier master. Downstream applies the decision.
+
+## Honest status: what works vs. what's stubbed
+
+| Component | Status |
+|---|---|
+| PDF text layer, RapidOCR, layout extractor, checkbox & signature ink detection | **Working**, tested, evaluated |
+| Validation, matching, decision engine, response contract, metrics/logging | **Working**, tested |
+| Confidence calibration | **Working**. Fitted on synthetic scans; production should refit on reviewed data. |
+| LlamaParse provider; Gemini → Groq LLM chain | **Run live on all 13 samples: 13/13 decisions match** (see *Live results* below). Gemini's fallback to Groq is covered by fake-client tests; the live runs did not exercise a Gemini failure. Vendor prices are still estimates. |
+| TIN vault | **Stub**. Placeholder XOR "encryption" marks the seam (production: Key Vault-wrapped DEK). |
+| Supplier master | CSV behind a tenant-scoped repository interface (production: Supplier Master API / search index) |
+
+## Live results (13 synthetic samples, LlamaParse + Gemini → Groq)
+
+All 13 decisions match the expected ones, including the fraud-shaped cases (04, 05), the wrong form (10), the phone photo (09) and tenant isolation (13). Observed:
+
+- **Latency:** the parse step is the slow part: 11–21 s per document with LlamaParse `agentic` (it also parsed text-layer PDFs when `--ocr llamaparse` forced it). The LLM call is 1–3 s. With `--ocr auto`, PDFs with a text layer skip LlamaParse. This suits a queued back-office job, not an interactive screen.
+- **Cost:** LlamaParse about $0.0125 per parsed page (10 credits). One Gemini call was 1,680 input and 388 output tokens, well under a cent. Prices are still unverified estimates.
+- **Two bugs the live runs found, both fixed:** Windows read the prompt files with the wrong text encoding, and the line-based layout reader could not use LlamaParse's block-level boxes. A third, a false review on document 12 caused by `[x] LLC` in the text without the handwritten subtype letter, is also fixed and covered by tests.
+
+**Read this with care.** These are 13 synthetic documents, one per scenario, and the document-12 fix was made after seeing its result, so 13/13 is not an accuracy estimate for real W-9s. The next step is 30–50 real, redacted forms.
+
+## Deferred, and why
+
+Handwritten forms, multi-page page classification, Line 4 exemption codes, IRS TIN Matching, OFAC screening, USPS address standardisation, the review-feedback loop and a REST API are all deferred. Each one either fails *safe* today (it goes to review) or lives in a downstream service. See DESIGN.md §10 and `docs/PRODUCTION_READINESS.md`.
+
+## Next 
+
+1. Run `scripts/live_smoke.py`, then `--ocr llamaparse --extractor hybrid` on the sample set and on 30–50 real (redacted) W-9s; refit calibration (`fit_calibration.py --ocr llamaparse`) and compare review rate and cost per tier against layout-only.
+2. Add a third reader (for example Azure DI `prebuilt-tax.us.w9`) for per-field majority vote, and test a `cost_effective` → `agentic` cascade.
+3. Capture reviewer outcomes (a JSON feedback file is enough) and automate the calibration refit plus a threshold sweep (false-match rate vs review rate).
+4. Add photo pre-processing (deskew/perspective) and handwritten samples.
+5. Wrap `pipeline.process` in a thin FastAPI and a queue worker with idempotency on `sha256`.
+
+## Repository layout
+
+```
+src/
+├── main.py                         launcher: python src/main.py process|batch|schema
+└── w9_onboarding/
+    ├── config.py                   thresholds, policy, prices, paths
+    ├── presentation/cli.py         command-line interface
+    ├── services/                   pipeline, validator, matcher, decision_engine, response_builder, calibration
+    │   └── extraction/             extractor (hybrid), layout_extractor, llm_extractor (Gemini → Groq chain)
+    ├── domain/models.py            entities, enums, value objects (no outward dependencies)
+    ├── dto/onboarding_response.py  public response contract v1
+    ├── repositories/               supplier_master (per-tenant), tin_vault
+    ├── infrastructure/             ocr (text layer, LlamaParse, RapidOCR), llm_clients (Gemini, Groq)
+    ├── utils/                      normalize, observability, security (hashing, masking, log redaction)
+    └── prompts/                    LLM prompts
+tests/  scripts/  eval/  samples/  calibration/  schemas/  examples/
+docs/                           DESIGN.pdf, DESIGN.md, DESIGN_DETAILED.md, PRODUCTION_READINESS.md, INTERVIEW_DEFENCE.md
+```
+
+Dependencies only point inward (domain ← dto/utils ← repositories/infrastructure ← services ← presentation), and `tests/test_architecture.py` fails the build if a layer imports one it shouldn't. See DESIGN.md §8.
